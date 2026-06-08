@@ -1,0 +1,4 @@
+{
+  "login": { "title": "Вход", "email": "Почта", "password": "Пароль", "submit": "Войти" },
+  "tracks": { "title": "Треки" }
+}
