@@ -1,4 +1,11 @@
 {
-  "login": { "title": "Вход", "email": "Почта", "password": "Пароль", "submit": "Войти" },
-  "tracks": { "title": "Треки" }
+  "login": {
+    "title": "Вход",
+    "email": "Почта",
+    "password": "Пароль",
+    "submit": "Войти",
+    "error": "Не удалось войти"
+  },
+  "tracks": { "title": "Треки" },
+  "logout": "Выйти"
 }
