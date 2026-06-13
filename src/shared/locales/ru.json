@@ -6,6 +6,35 @@
     "submit": "Войти",
     "error": "Не удалось войти"
   },
-  "tracks": { "title": "Треки" },
-  "logout": "Выйти"
+  "tracks": { "title": "Треки", "logout": "Выйти" },
+  "logout": "Выйти",
+  "lesson": {
+    "mainPhrase": "Главная фраза",
+    "substitute": "Подставь",
+    "back": "Назад",
+    "next": "Далее",
+    "finish": "Готово",
+    "loading": "Загрузка…",
+    "stepComingSoon": "Шаг «{{kind}}» — скоро",
+    "assemble": {
+      "title": "Собери фразу",
+      "prompt": "Собери: «{{translation}}»",
+      "correct": "Верно!",
+      "wrong": "Не тот порядок"
+    },
+    "speak": {
+      "title": "Произнеси",
+      "record": "🎤 Записать голос",
+      "recording": "● Идёт запись… (стоп)",
+      "recorded": "Записано (демо)",
+      "stubNote": "Запись и сравнение голоса появятся в приложении."
+    },
+    "dialog": {
+      "title": "Диалог",
+      "you": "Ты",
+      "staff": "Собеседник",
+      "yourLine": "Скажи: «{{translation}}»",
+      "hint": "Подсказка"
+    }
+  }
 }

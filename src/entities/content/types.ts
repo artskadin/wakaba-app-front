@@ -135,5 +135,5 @@ export interface LessonBundle {
   grammarNotes: Record<string, GrammarNote>;
   patterns: Record<string, Pattern>;
   sentences: Record<string, Sentence>;
-  dialog: Record<string, Dialog>;
+  dialogs: Record<string, Dialog>;
 }
