@@ -1,12 +1,13 @@
 import type { ContentManifest, LessonBundle, TrackManifest } from '@/entities/content';
+import { api } from './client';
 
 let manifest: ContentManifest | null = null;
 const lessons = new Map<string, LessonBundle>();
 
 async function loadManifest(): Promise<ContentManifest> {
   if (!manifest) {
-    const res = await fetch('/content/manifest.json');
-    manifest = (await res.json()) as ContentManifest;
+    const { data } = await api.get<ContentManifest>('/content/manifest');
+    manifest = data;
   }
 
   return manifest;
@@ -24,14 +25,10 @@ export const contentRepo = {
       return cache;
     }
 
-    const res = await fetch(`/content/lessons/${id}.json`);
-    if (!res) {
-      throw new Error(`Lesson ${id} not found`);
-    }
+    const { data } = await api.get<LessonBundle>(`/content/lessons/${id}`);
 
-    const bundle = (await res.json()) as LessonBundle;
-    lessons.set(id, bundle);
+    lessons.set(id, data);
 
-    return bundle;
+    return data;
   },
 };
