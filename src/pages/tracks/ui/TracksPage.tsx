@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { useQuery } from '@tanstack/react-query';
 import { contentRepo } from '@/shared/api/contentRepo';
 import { localize } from '@/shared/lib/localize';
+import { progressRepo } from '@/shared/api/progressRepo';
 
 export function TracksPage() {
   const { t } = useTranslation();
@@ -13,6 +14,14 @@ export function TracksPage() {
     queryKey: ['tracks'],
     queryFn: () => contentRepo.getTracks(),
   });
+  const { data: progress } = useQuery({
+    queryKey: ['progress'],
+    queryFn: () => progressRepo.getAll(),
+  });
+
+  const completedIds = new Set(
+    (progress ?? []).filter((item) => item.status === 'completed').map((item) => item.lessonId),
+  );
 
   return (
     <div className="mx-auto max-w-2xl p-6">
@@ -26,17 +35,24 @@ export function TracksPage() {
       {isPending && <p className="text-muted-foreground">{t('tracks.title')}...</p>}
 
       <ul className="flex flex-col gap-3">
-        {tracks?.map((track) => (
-          <li key={track.id}>
-            <Link
-              to={`/lesson/${track.lessons[0].id}`}
-              className="block rounded-xl border p-4 transition hover:bg-accent"
-            >
-              <div className="font-medium">{localize(track.title)}</div>
-              <div className="text-sm text-muted-foreground">{localize(track.description)}</div>
-            </Link>
-          </li>
-        ))}
+        {tracks?.map((track) => {
+          const done = track.lessons.filter((lesson) => completedIds.has(lesson.id)).length;
+
+          return (
+            <li key={track.id}>
+              <Link
+                to={`/lesson/${track.lessons[0].id}`}
+                className="block rounded-xl border p-4 transition hover:bg-accent"
+              >
+                <div className="font-medium">{localize(track.title)}</div>
+                <div className="text-sm text-muted-foreground">{localize(track.description)}</div>
+                <div className="mt-1 text-xs text-primary">
+                  {t('tracks.progress', { done, total: track.lessons.length })}
+                </div>
+              </Link>
+            </li>
+          );
+        })}
       </ul>
     </div>
   );

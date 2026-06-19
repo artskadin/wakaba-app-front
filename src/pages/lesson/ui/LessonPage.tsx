@@ -1,13 +1,14 @@
 import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router';
 import { useTranslation } from 'react-i18next';
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { contentRepo } from '@/shared/api/contentRepo';
 import { localize } from '@/shared/lib/localize';
 import type { ResolvedToken } from '@/entities/content';
 import { Button } from '@/components/ui/button';
 import { TokenDetailDrawer } from './TokenDetailDrawer';
 import { StepView } from './StepView';
+import { progressRepo } from '@/shared/api/progressRepo';
 
 export function LessonPage() {
   const { t } = useTranslation();
@@ -20,6 +21,28 @@ export function LessonPage() {
   });
   const [stepIdx, setStepIdx] = useState(0);
   const [selectedToken, setSelectedToken] = useState<ResolvedToken | null>(null);
+
+  const queryClient = useQueryClient();
+  const saveProgress = useMutation({
+    mutationFn: (input: { currentStep: number; status: 'completed' }) =>
+      progressRepo.save(lessonId!, input),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['progress'] }),
+  });
+
+  function handleNext() {
+    if (!isLastStep) {
+      setStepIdx((idx) => idx + 1);
+      return;
+    }
+
+    saveProgress.mutate(
+      {
+        currentStep: stepIdx,
+        status: 'completed',
+      },
+      { onSuccess: () => navigate('/tracks') },
+    );
+  }
 
   if (!bundle) {
     return <div className="p-6 text-muted-foreground">{t('lesson.loading')}</div>;
@@ -50,16 +73,7 @@ export function LessonPage() {
         <Button variant="outline" disabled={stepIdx === 0} onClick={() => setStepIdx((i) => i - 1)}>
           {t('lesson.back')}
         </Button>
-        <Button
-          className="flex-1"
-          onClick={() => {
-            if (isLastStep) {
-              navigate('/tracks');
-            } else {
-              setStepIdx((prev) => prev + 1);
-            }
-          }}
-        >
+        <Button className="flex-1" onClick={handleNext}>
           {isLastStep ? t('lesson.finish') : t('lesson.next')}
         </Button>
       </div>

@@ -6,7 +6,7 @@
     "submit": "Войти",
     "error": "Не удалось войти"
   },
-  "tracks": { "title": "Треки", "logout": "Выйти" },
+  "tracks": { "title": "Треки", "logout": "Выйти", "progress": "Пройдено {{done}} из {{total}}" },
   "logout": "Выйти",
   "lesson": {
     "mainPhrase": "Главная фраза",
