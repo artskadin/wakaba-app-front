@@ -1,10 +1,14 @@
-import { BrowserRouter, Routes, Navigate, Route } from 'react-router';
+import { BrowserRouter, Routes, Route } from 'react-router';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { LoginPage } from '@/pages/login';
 import { TracksPage } from '@/pages/tracks';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { RequireAuth } from './RequireAuth';
 import { useInitAuth } from '@/features/auth';
 import { LessonPage } from '@/pages/lesson/ui/LessonPage';
+import { TrackPage } from '@/pages/track';
+import { ProfilePage } from '@/pages/profile';
+import { HomePage } from '@/pages/home';
+import { RequireAuth } from './RequireAuth';
+import { AppLayout } from './AppLayout';
 
 const queryClient = new QueryClient();
 
@@ -18,8 +22,12 @@ export function App() {
           <Routes>
             <Route path="/login" element={<LoginPage />} />
             <Route element={<RequireAuth />}>
-              <Route path="/" element={<Navigate to="/tracks" replace />} />
-              <Route path="/tracks" element={<TracksPage />} />
+              <Route element={<AppLayout />}>
+                <Route path="/" element={<HomePage />} />
+                <Route path="/tracks" element={<TracksPage />} />
+                <Route path="/tracks/:trackId" element={<TrackPage />} />
+                <Route path="/profile" element={<ProfilePage />} />
+              </Route>
               <Route path="/lesson/:lessonId" element={<LessonPage />}></Route>
             </Route>
           </Routes>

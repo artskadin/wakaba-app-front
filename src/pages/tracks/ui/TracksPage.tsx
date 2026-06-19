@@ -41,7 +41,7 @@ export function TracksPage() {
           return (
             <li key={track.id}>
               <Link
-                to={`/lesson/${track.lessons[0].id}`}
+                to={`/tracks/${track.id}`}
                 className="block rounded-xl border p-4 transition hover:bg-accent"
               >
                 <div className="font-medium">{localize(track.title)}</div>

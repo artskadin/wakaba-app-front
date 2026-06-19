@@ -36,5 +36,8 @@
       "yourLine": "Скажи: «{{translation}}»",
       "hint": "Подсказка"
     }
-  }
+  },
+  "nav": { "home": "Главная", "tracks": "Треки", "profile": "Профиль" },
+  "home": { "greeting": "С возвращением", "subtitle": "Продолжим учить японский?" },
+  "profile": { "email": "Почта", "registered": "Зарегистрирован", "completed": "Пройдено лекций" }
 }
