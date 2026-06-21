@@ -6,9 +6,9 @@ import { contentRepo } from '@/shared/api/contentRepo';
 import { localize } from '@/shared/lib/localize';
 import type { ResolvedToken } from '@/entities/content';
 import { Button } from '@/components/ui/button';
+import { progressRepo } from '@/shared/api/progressRepo';
 import { TokenDetailDrawer } from './TokenDetailDrawer';
 import { StepView } from './StepView';
-import { progressRepo } from '@/shared/api/progressRepo';
 
 export function LessonPage() {
   const { t } = useTranslation();
@@ -22,12 +22,19 @@ export function LessonPage() {
   const [stepIdx, setStepIdx] = useState(0);
   const [selectedToken, setSelectedToken] = useState<ResolvedToken | null>(null);
 
+  const [stepSolved, setStepSolved] = useState(false);
+
   const queryClient = useQueryClient();
   const saveProgress = useMutation({
     mutationFn: (input: { currentStep: number; status: 'completed' }) =>
       progressRepo.save(lessonId!, input),
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ['progress'] }),
   });
+
+  function goToStep(index: number) {
+    setStepIdx(index);
+    setStepSolved(false);
+  }
 
   function handleNext() {
     if (!isLastStep) {
@@ -36,10 +43,7 @@ export function LessonPage() {
     }
 
     saveProgress.mutate(
-      {
-        currentStep: stepIdx,
-        status: 'completed',
-      },
+      { currentStep: stepIdx, status: 'completed' },
       { onSuccess: () => navigate('/tracks') },
     );
   }
@@ -52,6 +56,9 @@ export function LessonPage() {
   const step = steps[stepIdx];
   const progress = ((stepIdx + 1) / steps.length) * 100;
   const isLastStep = stepIdx === steps.length - 1;
+
+  const requiresCompletion = step.kind === 'assemble';
+  const canAdvance = !requiresCompletion || stepSolved;
 
   return (
     <div className="mx-auto flex min-h-screen max-w-md flex-col p-4">
@@ -66,14 +73,24 @@ export function LessonPage() {
       </div>
 
       <div className="flex-1">
-        <StepView key={stepIdx} bundle={bundle} step={step} onTokenClick={setSelectedToken} />
+        <StepView
+          key={stepIdx}
+          bundle={bundle}
+          step={step}
+          onTokenClick={setSelectedToken}
+          onStepSolvedChange={setStepSolved}
+        />
       </div>
 
       <div className="mt-4 flex gap-3">
-        <Button variant="outline" disabled={stepIdx === 0} onClick={() => setStepIdx((i) => i - 1)}>
+        <Button variant="outline" disabled={stepIdx === 0} onClick={() => goToStep(stepIdx - 1)}>
           {t('lesson.back')}
         </Button>
-        <Button className="flex-1" onClick={handleNext}>
+        <Button
+          className="flex-1"
+          disabled={!canAdvance || saveProgress.isPending}
+          onClick={handleNext}
+        >
           {isLastStep ? t('lesson.finish') : t('lesson.next')}
         </Button>
       </div>
