@@ -1,4 +1,5 @@
 import type { ContentManifest, LessonBundle, TrackManifest } from '@/entities/content';
+import type { TokenDetailData } from '@/entities/favourites';
 import { api } from './client';
 
 let manifest: ContentManifest | null = null;
@@ -28,6 +29,12 @@ export const contentRepo = {
     const { data } = await api.get<LessonBundle>(`/content/lessons/${id}`);
 
     lessons.set(id, data);
+
+    return data;
+  },
+
+  async getTokenDetail(id: string) {
+    const { data } = await api.get<TokenDetailData>(`/content/tokens/${id}`);
 
     return data;
   },

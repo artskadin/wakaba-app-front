@@ -1,10 +1,11 @@
 import { NavLink } from 'react-router';
-import { BookOpen, Home, User } from 'lucide-react';
+import { BookOpen, Home, Star, User } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
 const items = [
   { to: '/', icon: Home, key: 'nav.home', end: true },
   { to: '/tracks', icon: BookOpen, key: 'nav.tracks', end: false },
+  { to: '/favourites', icon: Star, key: 'nav.favourites', end: false },
   { to: '/profile', icon: User, key: 'nav.profile', end: false },
 ];
 

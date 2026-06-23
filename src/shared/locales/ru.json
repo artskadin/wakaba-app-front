@@ -37,7 +37,8 @@
       "hint": "Подсказка"
     }
   },
-  "nav": { "home": "Главная", "tracks": "Треки", "profile": "Профиль" },
+  "nav": { "home": "Главная", "tracks": "Треки", "favourites": "Избранное", "profile": "Профиль" },
   "home": { "greeting": "С возвращением", "subtitle": "Продолжим учить японский?" },
-  "profile": { "email": "Почта", "registered": "Зарегистрирован", "completed": "Пройдено лекций" }
+  "profile": { "email": "Почта", "registered": "Зарегистрирован", "completed": "Пройдено лекций" },
+  "favourites": { "empty": "Пока пусто. Тапни звезду у слова в уроке." }
 }

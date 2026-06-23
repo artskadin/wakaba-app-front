@@ -7,8 +7,8 @@ import { localize } from '@/shared/lib/localize';
 import type { ResolvedToken } from '@/entities/content';
 import { Button } from '@/components/ui/button';
 import { progressRepo } from '@/shared/api/progressRepo';
-import { TokenDetailDrawer } from './TokenDetailDrawer';
 import { StepView } from './StepView';
+import { TokenDetailDrawer } from '@/widgets/token-detail';
 
 export function LessonPage() {
   const { t } = useTranslation();
@@ -21,6 +21,10 @@ export function LessonPage() {
   });
   const [stepIdx, setStepIdx] = useState(0);
   const [selectedToken, setSelectedToken] = useState<ResolvedToken | null>(null);
+
+  const selectedNote = selectedToken?.token.grammarNoteId
+    ? (bundle?.grammarNotes[selectedToken.token.grammarNoteId] ?? null)
+    : null;
 
   const [stepSolved, setStepSolved] = useState(false);
 
@@ -96,8 +100,9 @@ export function LessonPage() {
       </div>
 
       <TokenDetailDrawer
-        resolvedToken={selectedToken}
-        bundle={bundle}
+        open={!!selectedToken}
+        token={selectedToken?.token ?? null}
+        note={selectedNote}
         onClose={() => setSelectedToken(null)}
       />
     </div>

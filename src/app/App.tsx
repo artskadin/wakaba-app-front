@@ -7,6 +7,7 @@ import { LessonPage } from '@/pages/lesson/ui/LessonPage';
 import { TrackPage } from '@/pages/track';
 import { ProfilePage } from '@/pages/profile';
 import { HomePage } from '@/pages/home';
+import { FavouritePage } from '@/pages/favourite';
 import { RequireAuth } from './RequireAuth';
 import { AppLayout } from './AppLayout';
 
@@ -26,6 +27,7 @@ export function App() {
                 <Route path="/" element={<HomePage />} />
                 <Route path="/tracks" element={<TracksPage />} />
                 <Route path="/tracks/:trackId" element={<TrackPage />} />
+                <Route path="/favourites" element={<FavouritePage />} />
                 <Route path="/profile" element={<ProfilePage />} />
               </Route>
               <Route path="/lesson/:lessonId" element={<LessonPage />}></Route>
