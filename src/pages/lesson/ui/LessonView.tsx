@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { localize } from '@/shared/lib/localize';
@@ -7,16 +7,23 @@ import { Button } from '@/components/ui/button';
 import { useRepos } from '@/shared/api/repos';
 import { StepView } from './StepView';
 import { TokenDetailDrawer } from '@/widgets/token-detail';
+import { VoiceToggle } from '@/shared/ui/VoiceToggle';
+import type { Voice } from '@/entities/settings';
+import { useVoiceStore } from '@/features/voice/model/voiceStore';
 
 interface LessonViewProps {
   bundle: LessonBundle;
+  initialVoice: Voice;
   onFinish: () => void;
 }
 
-export function LessonView({ bundle, onFinish }: LessonViewProps) {
+export function LessonView({ bundle, initialVoice = 'm', onFinish }: LessonViewProps) {
   const { t } = useTranslation();
   const { progress: progressRepo } = useRepos();
   const queryClient = useQueryClient();
+
+  const voice = useVoiceStore((s) => s.voice);
+  const setVoice = useVoiceStore((s) => s.setVoice);
 
   const [stepIdx, setStepIdx] = useState(0);
   const [selectedToken, setSelectedToken] = useState<ResolvedToken | null>(null);
@@ -53,6 +60,10 @@ export function LessonView({ bundle, onFinish }: LessonViewProps) {
     saveProgress.mutate({ currentStep: stepIdx, status: 'completed' }, { onSuccess: onFinish });
   }
 
+  useEffect(() => {
+    setVoice(initialVoice);
+  }, [initialVoice, setVoice]);
+
   return (
     <div className="mx-auto flex h-dvh max-w-md flex-col p-4">
       <div className="mb-4">
@@ -62,6 +73,11 @@ export function LessonView({ bundle, onFinish }: LessonViewProps) {
             className="h-full rounded bg-primary transition-all"
             style={{ width: `${progress}%` }}
           />
+        </div>
+
+        <div className="mb-4 flex items-center justify-between">
+          <p className="text-sm text-muted-foreground">{localize(bundle.lesson.title)}</p>
+          <VoiceToggle value={voice} onChange={setVoice} />
         </div>
       </div>
 
