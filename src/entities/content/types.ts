@@ -1,4 +1,4 @@
-export interface LocallizedText {
+export interface LocalizedText {
   ru: string;
   en?: string;
 }
@@ -25,7 +25,7 @@ export interface Token {
   reading: string;
   romaji: string;
   cyrillic: string;
-  gloss: LocallizedText;
+  gloss: LocalizedText;
   type: TokenType;
   audioKey?: string;
   grammarNoteId?: string;
@@ -41,16 +41,17 @@ export interface TokenRef {
 export interface Sentence {
   id: string;
   tokens: TokenRef[];
-  translation: LocallizedText;
+  translation: LocalizedText;
   romaji: string;
-  cyrillicGuide: LocallizedText;
+  cyrillicGuide: LocalizedText;
   audioKey: string;
   patternId?: string;
+  grammarNoteIds?: string[];
 }
 
 export interface Pattern {
   id: string;
-  explanation: LocallizedText;
+  explanation: LocalizedText;
   slotType: SlotType;
   grammarNoteIds: string[];
 }
@@ -63,16 +64,21 @@ export interface ExampleForm {
 }
 
 export type GrammarExample =
-  | { kind: 'transform'; from: ExampleForm; to: ExampleForm; note?: LocallizedText }
-  | { kind: 'phrase'; forms: ExampleForm[]; note?: LocallizedText }
-  | { kind: 'plain'; text: LocallizedText };
+  | { kind: 'transform'; from: ExampleForm; to: ExampleForm; note?: LocalizedText }
+  | { kind: 'phrase'; forms: ExampleForm[]; note?: LocalizedText }
+  | { kind: 'plain'; text: LocalizedText };
+
+export interface GrammarBlock {
+  summary: LocalizedText;
+  details?: LocalizedText[];
+  examples: GrammarExample[];
+}
 
 export interface GrammarNote {
   id: string;
-  title: LocallizedText;
-  body: LocallizedText;
-  examples: GrammarExample[];
-  deeper?: LocallizedText;
+  title: LocalizedText;
+  body: GrammarBlock[];
+  deeper?: GrammarBlock[];
 }
 
 export interface DialogTurn {
@@ -82,7 +88,7 @@ export interface DialogTurn {
 
 export interface Dialog {
   id: string;
-  title: LocallizedText;
+  title: LocalizedText;
   turns: DialogTurn[];
 }
 
@@ -96,15 +102,15 @@ export type LessonStep =
 export interface ChangelogEntry {
   version: number;
   date: string;
-  summary: LocallizedText;
+  summary: LocalizedText;
   notify: boolean;
 }
 
 export interface Lesson {
   id: string;
   trackId: string;
-  title: LocallizedText;
-  context: LocallizedText;
+  title: LocalizedText;
+  context: LocalizedText;
   steps: LessonStep[];
   version: number;
   changelog: ChangelogEntry[];
@@ -112,16 +118,16 @@ export interface Lesson {
 
 export interface Track {
   id: string;
-  title: LocallizedText;
-  description: LocallizedText;
+  title: LocalizedText;
+  description: LocalizedText;
   lessonIds: string[];
 }
 
 export interface TrackManifest {
   id: string;
-  title: LocallizedText;
-  description: LocallizedText;
-  lessons: { id: string; title: LocallizedText }[];
+  title: LocalizedText;
+  description: LocalizedText;
+  lessons: { id: string; title: LocalizedText }[];
 }
 
 export interface ContentManifest {

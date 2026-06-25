@@ -1,8 +1,10 @@
-import { favouriteRepo } from '@/shared/api/favouriteRepo';
+import { useRepos } from '@/shared/api/repos';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 export function useTokenFavourite(tokenId: string) {
+  const { favourites: favouriteRepo } = useRepos();
   const queryClient = useQueryClient();
+
   const { data: favourites } = useQuery({
     queryKey: ['favourites'],
     queryFn: () => favouriteRepo.getAll(),

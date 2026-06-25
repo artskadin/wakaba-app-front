@@ -40,5 +40,14 @@
   "nav": { "home": "Главная", "tracks": "Треки", "favourites": "Избранное", "profile": "Профиль" },
   "home": { "greeting": "С возвращением", "subtitle": "Продолжим учить японский?" },
   "profile": { "email": "Почта", "registered": "Зарегистрирован", "completed": "Пройдено лекций" },
-  "favourites": { "empty": "Пока пусто. Тапни звезду у слова в уроке." }
+  "favourites": { "empty": "Пока пусто. Тапни звезду у слова в уроке." },
+  "grammar": {
+    "showDeeper": "Подробнее (продвинутое)",
+    "collapse": "Свернуть"
+  },
+  "preview": {
+    "title": "Превью лекций (черновики)",
+    "empty": "Нет черновиков. Положи JSON в features/preview/model/drafts/.",
+    "integrityProblems": "Проблемы целостности ({{count}}):"
+  }
 }

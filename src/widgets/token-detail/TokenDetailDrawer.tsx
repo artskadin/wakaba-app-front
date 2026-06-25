@@ -12,8 +12,10 @@ interface TokenDetailDrawerProps {
 export function TokenDetailDrawer({ open, token, note, onClose }: TokenDetailDrawerProps) {
   return (
     <Drawer open={open} onOpenChange={(v) => !v && onClose()}>
-      <DrawerContent className="p-4">
-        {token && <TokenDetail token={token} note={note} />}
+      <DrawerContent className="p-0">
+        <div className="max-h-[70vh] overflow-y-auto px-4 pb-6 pt-2">
+          {token && <TokenDetail token={token} note={note} />}
+        </div>
       </DrawerContent>
     </Drawer>
   );

@@ -1,4 +1,4 @@
-import type { GrammarNote, LocallizedText, Token } from '@/entities/content';
+import type { GrammarNote, LocalizedText, Token } from '@/entities/content';
 
 export type FavouriteItemType = 'token' | 'sentence';
 
@@ -7,7 +7,7 @@ export interface FavouriteToken {
   surface: string;
   romaji: string;
   cyrillic: string;
-  gloss: LocallizedText;
+  gloss: LocalizedText;
 }
 
 export interface Favourite {

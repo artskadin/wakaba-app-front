@@ -10,6 +10,8 @@ import { HomePage } from '@/pages/home';
 import { FavouritePage } from '@/pages/favourite';
 import { RequireAuth } from './RequireAuth';
 import { AppLayout } from './AppLayout';
+import { PreviewIndexPage } from '@/pages/preview/PreviewIndexPage';
+import { PreviewLessonPage } from '@/pages/preview/PreviewLessonPage';
 
 const queryClient = new QueryClient();
 
@@ -22,6 +24,14 @@ export function App() {
         {ready ? (
           <Routes>
             <Route path="/login" element={<LoginPage />} />
+
+            {import.meta.env.DEV && (
+              <>
+                <Route path="/preview" element={<PreviewIndexPage />} />
+                <Route path="/preview/lessons/:lessonId" element={<PreviewLessonPage />} />
+              </>
+            )}
+
             <Route element={<RequireAuth />}>
               <Route element={<AppLayout />}>
                 <Route path="/" element={<HomePage />} />

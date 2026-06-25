@@ -1,19 +1,37 @@
+import { useTranslation } from 'react-i18next';
+import { useState } from 'react';
 import { localize } from '@/shared/lib/localize';
 import type { GrammarNote } from '../types';
-import { GrammarExampleView } from './GrammarExampleView';
+import { GrammarBlockView } from './GrammarBlockView';
 
 interface GrammarNoteViewProps {
   note: GrammarNote;
 }
 
 export function GrammarNoteView({ note }: GrammarNoteViewProps) {
+  const { t } = useTranslation();
+  const [showDeeper, setShowDeeper] = useState(false);
+
   return (
-    <div className="mt-4 rounded-xl bg-purple-50 p-3">
-      <h4 className="text-sm font-semibold text-purple-700">{localize(note.title)}</h4>
-      <p className="mt-1 text-sm">{localize(note.body)}</p>
-      {note.examples.map((example, i) => (
-        <GrammarExampleView key={i} example={example} />
+    <section className="space-y-3">
+      <h3 className="text-sm font-semibold">{localize(note.title)}</h3>
+
+      {note.body.map((b, i) => (
+        <GrammarBlockView key={i} block={b} />
       ))}
-    </div>
+
+      {note.deeper && note.deeper.length > 0 && (
+        <div className="pt-1">
+          <button
+            type="button"
+            className="text-xs font-medium text-primary hover:underline"
+            onClick={() => setShowDeeper((v) => !v)}
+          >
+            {showDeeper ? t('grammar.collapse') : t('grammar.showDeeper')}
+          </button>
+          {showDeeper && note.deeper.map((b, i) => <GrammarBlockView key={i} block={b} />)}
+        </div>
+      )}
+    </section>
   );
 }

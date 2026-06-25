@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
+  GrammarNoteView,
   SentenceView,
   type LessonBundle,
   type LessonStep,
@@ -22,6 +23,7 @@ export function TeachStep({ bundle, step, onTokenClick }: TeachStepProps) {
   const [activeSentenceId, setActiveSentenceId] = useState(step.sentenceId);
   const activeSentence = bundle.sentences[activeSentenceId];
   const pattern = step.patternId ? bundle.patterns[step.patternId] : undefined;
+  const sentence = bundle.sentences[step.sentenceId];
 
   return (
     <div className="flex flex-col gap-5">
@@ -39,6 +41,12 @@ export function TeachStep({ bundle, step, onTokenClick }: TeachStepProps) {
           {localize(pattern.explanation)}
         </div>
       )}
+
+      {sentence.grammarNoteIds?.map((id) => {
+        const note = bundle.grammarNotes[id];
+
+        return note ? <GrammarNoteView key={id} note={note} /> : null;
+      })}
 
       {siblings.length > 1 && (
         <div>
