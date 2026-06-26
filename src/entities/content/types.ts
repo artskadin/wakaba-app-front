@@ -27,7 +27,6 @@ export interface Token {
   cyrillic: string;
   gloss: LocalizedText;
   type: TokenType;
-  audioKey?: string;
   grammarNoteId?: string;
   synonymGroupId?: string;
 }
@@ -44,7 +43,6 @@ export interface Sentence {
   translation: LocalizedText;
   romaji: string;
   cyrillicGuide: LocalizedText;
-  audioKey: string;
   patternId?: string;
   grammarNoteIds?: string[];
 }
@@ -82,7 +80,7 @@ export interface GrammarNote {
 }
 
 export interface DialogTurn {
-  speaker: 'user' | 'stuff';
+  speaker: 'user' | 'staff';
   sentenceId: string;
 }
 

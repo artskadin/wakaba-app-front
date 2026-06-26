@@ -1,12 +1,8 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import {
-  SentenceView,
-  type LessonBundle,
-  type LessonStep,
-  type ResolvedToken,
-} from '@/entities/content';
+import { type LessonBundle, type LessonStep, type ResolvedToken } from '@/entities/content';
 import { localize } from '@/shared/lib/localize';
+import { SentenceCard } from '@/widgets/sentence-card';
 
 type DialogStepDef = Extract<LessonStep, { kind: 'dialog' }>;
 
@@ -55,7 +51,7 @@ export function DialogStep({ bundle, step, onTokenClick }: DialogStepProps) {
                 </div>
               ) : (
                 <>
-                  <SentenceView
+                  <SentenceCard
                     bundle={bundle}
                     sentenceId={turn.sentenceId}
                     onTokenClick={onTokenClick}

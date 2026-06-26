@@ -13,7 +13,7 @@ import { useVoiceStore } from '@/features/voice/model/voiceStore';
 
 interface LessonViewProps {
   bundle: LessonBundle;
-  initialVoice: Voice;
+  initialVoice?: Voice;
   onFinish: () => void;
 }
 

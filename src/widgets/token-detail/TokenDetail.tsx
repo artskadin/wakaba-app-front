@@ -1,7 +1,7 @@
-import { Star } from 'lucide-react';
 import { GrammarNoteView, type GrammarNote, type Token } from '@/entities/content';
-import { useTokenFavourite } from '@/features/favourites/model/useTokenFavourite';
 import { localize } from '@/shared/lib/localize';
+import { useTokenFavourite } from '@/features/favourites';
+import { FavouriteButton } from '@/shared/ui/FavouriteButton';
 
 interface TokenDetailProps {
   token: Token;
@@ -19,19 +19,9 @@ export function TokenDetail({ token, note }: TokenDetailProps) {
           <div className="mt-1 text-sm text-muted-foreground">
             {token.reading} · {token.romaji} · [ {token.cyrillic} ]
           </div>
-          <div className="mt-2 text-lg fonfont-semibold">{localize(token.gloss)}</div>
+          <div className="mt-2 text-lg font-semibold">{localize(token.gloss)}</div>
         </div>
-        <button
-          type="button"
-          onClick={toggle}
-          disabled={isPending}
-          className="p-2"
-          aria-label="favourite"
-        >
-          <Star
-            className={`h-6 w-6 ${isFavourite ? 'fill-yellow-400 text-yellow-400' : 'text-muted-foreground'}`}
-          />
-        </button>
+        <FavouriteButton active={isFavourite} onToggle={toggle} disabled={isPending} />
       </div>
       {note && <GrammarNoteView note={note} />}
     </div>

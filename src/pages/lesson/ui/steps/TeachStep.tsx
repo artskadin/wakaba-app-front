@@ -2,12 +2,12 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
   GrammarNoteView,
-  SentenceView,
   type LessonBundle,
   type LessonStep,
   type ResolvedToken,
 } from '@/entities/content';
 import { localize } from '@/shared/lib/localize';
+import { SentenceCard } from '@/widgets/sentence-card';
 
 type TeachStepDef = Extract<LessonStep, { kind: 'teach' }>;
 
@@ -32,7 +32,7 @@ export function TeachStep({ bundle, step, onTokenClick }: TeachStepProps) {
       </p>
 
       <div className="rounded-2xl border p-4">
-        <SentenceView bundle={bundle} sentenceId={activeSentenceId} onTokenClick={onTokenClick} />
+        <SentenceCard bundle={bundle} sentenceId={activeSentenceId} onTokenClick={onTokenClick} />
         <p className="mt-3 text-base font-semibold">{localize(activeSentence.translation)}</p>
       </div>
 

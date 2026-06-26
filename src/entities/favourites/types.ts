@@ -10,12 +10,20 @@ export interface FavouriteToken {
   gloss: LocalizedText;
 }
 
+export interface FavouriteSentence {
+  id: string;
+  romaji: string;
+  translation: LocalizedText;
+  cyrillicGuide: LocalizedText;
+}
+
 export interface Favourite {
   id: string;
   itemType: FavouriteItemType;
   tokenId: string | null;
   sentenceId: string | null;
-  token: FavouriteToken;
+  token: FavouriteToken | null;
+  sentence: FavouriteSentence | null;
   createdAt: string;
 }
 
