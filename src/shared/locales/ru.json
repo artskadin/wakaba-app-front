@@ -6,6 +6,10 @@
     "submit": "Войти",
     "error": "Не удалось войти"
   },
+  "common": {
+    "copy": "Копировать",
+    "copied": "Скопировано"
+  },
   "tracks": { "title": "Треки", "logout": "Выйти", "progress": "Пройдено {{done}} из {{total}}" },
   "logout": "Выйти",
   "lesson": {

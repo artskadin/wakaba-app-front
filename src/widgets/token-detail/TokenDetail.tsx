@@ -2,6 +2,7 @@ import { GrammarNoteView, type GrammarNote, type Token } from '@/entities/conten
 import { localize } from '@/shared/lib/localize';
 import { useTokenFavourite } from '@/features/favourites';
 import { FavouriteButton } from '@/shared/ui/FavouriteButton';
+import { CopyButton } from '@/shared/ui/CopyButton';
 
 interface TokenDetailProps {
   token: Token;
@@ -15,7 +16,10 @@ export function TokenDetail({ token, note }: TokenDetailProps) {
     <div className="mx-auto w-full max-w-md pb-6">
       <div className="flex items-start justify-between">
         <div>
-          <div className="text-2xl">{token.surface}</div>
+          <div className="flex items-center gap-1">
+            <div className="text-2xl">{token.surface}</div>
+            <CopyButton text={token.surface} />
+          </div>
           <div className="mt-1 text-sm text-muted-foreground">
             {token.reading} • {token.romaji} • [ {token.cyrillic} ]
           </div>

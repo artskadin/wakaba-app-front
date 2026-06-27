@@ -8,16 +8,22 @@ import {
 interface SentenceViewProps {
   bundle: LessonBundle;
   sentenceId: string;
+  highlightSlot?: boolean;
   onTokenClick?: (resolvedToken: ResolvedToken) => void;
 }
 
-export function SentenceView({ bundle, sentenceId, onTokenClick }: SentenceViewProps) {
+export function SentenceView({
+  bundle,
+  sentenceId,
+  highlightSlot,
+  onTokenClick,
+}: SentenceViewProps) {
   const { tokens } = resolveSentence(bundle, sentenceId);
 
   return (
     <div className="flex flex-wrap items-start gap-x-1 gap-y-2">
       {tokens.map((resolved, i) => {
-        const isSlot = !!resolved.ref.slotType;
+        const isSlot = highlightSlot && !!resolved.ref.slotType;
 
         return (
           <button

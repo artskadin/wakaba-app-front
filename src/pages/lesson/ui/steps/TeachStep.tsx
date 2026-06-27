@@ -33,7 +33,12 @@ export function TeachStep({ bundle, step, onTokenClick }: TeachStepProps) {
       </p>
 
       <div className="rounded-lg border p-3">
-        <SentenceCard bundle={bundle} sentenceId={activeSentenceId} onTokenClick={onTokenClick} />
+        <SentenceCard
+          bundle={bundle}
+          sentenceId={activeSentenceId}
+          highlightSlot={true}
+          onTokenClick={onTokenClick}
+        />
         <p className="mt-3 text-base font-normal text-heading">
           {localize(activeSentence.translation)}
         </p>

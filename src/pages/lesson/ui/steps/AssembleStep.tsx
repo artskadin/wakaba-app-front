@@ -59,7 +59,7 @@ export function AssembleStep({ bundle, step, solved, onSolvedChange }: AssembleS
           <button
             key={tokenIdx}
             type="button"
-            className="flex flex-col items-center rounded-lg border px-2 py-1 text-lg"
+            className="flex flex-col items-center rounded-lg border px-2 py-1 text-lg cursor-pointer hover:bg-muted"
             onClick={() => remove(tokenIdx)}
           >
             <TokenView token={tokens[tokenIdx].token} />
@@ -73,7 +73,7 @@ export function AssembleStep({ bundle, step, solved, onSolvedChange }: AssembleS
             key={tokenIdx}
             type="button"
             disabled={placed.includes(tokenIdx)}
-            className="flex flex-col items-center rounded-lg border px-2 py-1 text-lg disabled:opacity-30"
+            className="flex flex-col items-center rounded-lg border px-2 py-1 text-lg disabled:opacity-30 cursor-pointer hover:bg-muted"
             onClick={() => place(tokenIdx)}
           >
             <TokenView token={tokens[tokenIdx].token} />
