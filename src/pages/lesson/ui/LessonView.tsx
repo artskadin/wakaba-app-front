@@ -36,7 +36,7 @@ export function LessonView({
 
   const [stepIdx, setStepIdx] = useState(0);
   const [selectedToken, setSelectedToken] = useState<ResolvedToken | null>(null);
-  const [stepSolved, setStepSolved] = useState(false);
+  const [solvedSteps, setSolvedSteps] = useState<Set<number>>(new Set());
 
   const selectedNote = selectedToken?.token.grammarNoteId
     ? (bundle?.grammarNotes[selectedToken.token.grammarNoteId] ?? null)
@@ -52,11 +52,27 @@ export function LessonView({
   const step = steps[stepIdx];
   const isLastStep = stepIdx === steps.length - 1;
   const requiresCompletion = step.kind === 'assemble';
-  const canAdvance = !requiresCompletion || stepSolved;
+  const canAdvance = !requiresCompletion || solvedSteps.has(stepIdx);
+
+  function handleStepSolvedChange(solved: boolean) {
+    setSolvedSteps((prev) => {
+      if (prev.has(stepIdx) === solved) {
+        return prev;
+      }
+
+      const next = new Set(prev);
+      if (solved) {
+        next.add(stepIdx);
+      } else {
+        next.delete(stepIdx);
+      }
+
+      return next;
+    });
+  }
 
   function goToStep(index: number) {
     setStepIdx(index);
-    setStepSolved(false);
   }
 
   function handleNext() {
@@ -100,8 +116,9 @@ export function LessonView({
           key={stepIdx}
           bundle={bundle}
           step={step}
+          solved={solvedSteps.has(stepIdx)}
           onTokenClick={setSelectedToken}
-          onStepSolvedChange={setStepSolved}
+          onStepSolvedChange={handleStepSolvedChange}
         />
       </div>
 

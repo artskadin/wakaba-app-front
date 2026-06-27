@@ -7,6 +7,8 @@
 
 @theme inline {
   --font-heading: var(--font-sans);
+  --color-voice-male: var(--voice-male);
+  --color-voice-female: var(--voice-female);
   --font-sans: 'Geist Variable', sans-serif;
   --color-heading: var(--heading);
   --color-surface: var(--surface);
@@ -51,10 +53,10 @@
 }
 
 :root {
-  --benzol: #00d973;
-  --antwerp: #008aa1;
-  --cobalt: #94ff94;
-  --lemon: #f0eaa8;
+  --benzol: #00978d;
+  --antwerp: #007190;
+  --cobalt: #96d1aa;
+  --lemon: #ffefae;
 
   --background: #ffffff;
   --foreground: #14201d;
@@ -76,6 +78,10 @@
   --ring: #00857b;
   --heading: #007190;
   --surface: #fffae0;
+
+  --voice-male: #007190;
+  --voice-female: #d96a93;
+
   --chart-1: oklch(0.87 0 0);
   --chart-2: oklch(0.556 0 0);
   --chart-3: oklch(0.439 0 0);
@@ -113,6 +119,10 @@
   --ring: #19b2a4;
   --heading: #4cb8d4;
   --surface: #1b2420;
+
+  --voice-male: #4cb8d4;
+  --voice-female: #f0a6c2;
+
   --chart-1: oklch(0.87 0 0);
   --chart-2: oklch(0.556 0 0);
   --chart-3: oklch(0.439 0 0);

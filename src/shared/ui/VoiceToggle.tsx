@@ -19,10 +19,10 @@ export function VoiceToggle({ value, onChange }: VoiceToggleProps) {
       onClick={() => onChange(isMale ? 'f' : 'm')}
       variant="outline"
       size="icon"
-      className={`rounded-lg border text-lg font-medium transition-colors cursor-pointer ${
+      className={`rounded-lg text-lg font-medium transition-colors cursor-pointer ${
         isMale
-          ? 'border-heading bg-heading/20 text-heading/80 hover:bg-heading/35 hover:text-heading'
-          : 'border-fuchsia-400 bg-fuchsia-400/20 text-fuchsia-800 hover:bg-fuchsia-400/35 hover:text-fuchsia-800'
+          ? 'border-voice-male dark:border-voice-male bg-voice-male/15 dark:bg-voice-male/15 text-voice-male hover:bg-voice-male/25 dark:hover:bg-voice-male/25 hover:text-voice-male dark:hover:text-voice-male'
+          : 'border-voice-female dark:border-voice-female bg-voice-female/15 dark:bg-voice-female/15 text-voice-female hover:bg-voice-female/25 dark:hover:bg-voice-female/25 hover:text-voice-female dark:hover:text-voice-female'
       }`}
     >
       {isMale ? '男' : '女'}

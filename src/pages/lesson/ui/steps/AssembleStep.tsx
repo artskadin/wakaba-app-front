@@ -14,15 +14,18 @@ type AssembleStepDef = Extract<LessonStep, { kind: 'assemble' }>;
 interface AssembleStepProps {
   bundle: LessonBundle;
   step: AssembleStepDef;
+  solved: boolean;
   onSolvedChange: (solved: boolean) => void;
 }
 
-export function AssembleStep({ bundle, step, onSolvedChange }: AssembleStepProps) {
+export function AssembleStep({ bundle, step, solved, onSolvedChange }: AssembleStepProps) {
   const { t } = useTranslation();
   const { sentence, tokens } = resolveSentence(bundle, step.sentenceId);
   const tokenCount = tokens.length;
   const shuffledOrder = shuffledIndices(step.sentenceId, tokenCount);
-  const [placed, setPlaced] = useState<number[]>([]);
+  const [placed, setPlaced] = useState<number[]>(() =>
+    solved ? Array.from({ length: tokenCount }, (_, i) => i) : [],
+  );
 
   const isSolved = (order: number[]) =>
     order.length === tokenCount && order.every((v, idx) => v === idx);
