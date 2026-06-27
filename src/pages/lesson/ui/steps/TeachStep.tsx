@@ -8,6 +8,7 @@ import {
 } from '@/entities/content';
 import { localize } from '@/shared/lib/localize';
 import { SentenceCard } from '@/widgets/sentence-card';
+import { Button } from '@/components/ui/button';
 
 type TeachStepDef = Extract<LessonStep, { kind: 'teach' }>;
 
@@ -26,19 +27,22 @@ export function TeachStep({ bundle, step, onTokenClick }: TeachStepProps) {
   const sentence = bundle.sentences[step.sentenceId];
 
   return (
-    <div className="flex flex-col gap-5">
-      <p className="text-xs uppercase tracking-wide text-muted-foreground">
+    <div className="flex flex-col gap-4">
+      <p className="text-sm uppercase tracking-wide text-muted-foreground">
         {t('lesson.mainPhrase')}
       </p>
 
-      <div className="rounded-2xl border p-4">
+      <div className="rounded-lg border p-3">
         <SentenceCard bundle={bundle} sentenceId={activeSentenceId} onTokenClick={onTokenClick} />
-        <p className="mt-3 text-base font-semibold">{localize(activeSentence.translation)}</p>
+        <p className="mt-3 text-base font-normal text-heading">
+          {localize(activeSentence.translation)}
+        </p>
       </div>
 
       {pattern && (
-        <div className="rounded-xl border border-dashed p-3 text-sm">
-          {localize(pattern.explanation)}
+        <div className="flex flex-col gap-2 rounded-lg border border-dashed p-3 text-sm">
+          <p className="tracking-wide text-muted-foreground">{t('lesson.pattern')}</p>
+          <p>{localize(pattern.explanation)}</p>
         </div>
       )}
 
@@ -50,7 +54,7 @@ export function TeachStep({ bundle, step, onTokenClick }: TeachStepProps) {
 
       {siblings.length > 1 && (
         <div>
-          <p className="mb-2 text-xs uppercase tracking-wide text-muted-foreground">
+          <p className="mb-2 text-sm uppercase tracking-wide text-muted-foreground">
             {t('lesson.substitute')}
           </p>
           <div className="flex flex-wrap gap-2">
@@ -61,14 +65,26 @@ export function TeachStep({ bundle, step, onTokenClick }: TeachStepProps) {
               const isActive = sentenceId === activeSentenceId;
 
               return (
-                <button
+                <Button
                   key={sentenceId}
                   type="button"
                   onClick={() => setActiveSentenceId(sentenceId)}
-                  className={`rounded-full border px-3 py-1.5 text-sm transition ${isActive ? 'border-primary bg-primary/10 text-primary' : 'hover:bg-muted'}`}
+                  variant="outline"
+                  className={`
+                    rounded-lg
+                    text-sm
+                    transition
+                    font-normal
+                    cursor-pointer
+                    hover:border-primary/15
+                    ${
+                      isActive
+                        ? 'border-primary/80 bg-primary/10 text-primary hover:border-primary/10 hover:bg-primary/10 hover:text-primary'
+                        : 'hover:border-primary/10 hover:text-primary hover:bg-primary/10'
+                    }`}
                 >
                   {focusWord ? focusWord.cyrillic : localize(sentence.translation)}
-                </button>
+                </Button>
               );
             })}
           </div>

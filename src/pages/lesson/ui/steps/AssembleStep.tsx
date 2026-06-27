@@ -80,7 +80,7 @@ export function AssembleStep({ bundle, step, onSolvedChange }: AssembleStepProps
 
       {isComplete && (
         <p
-          className={`rounded-lg p-3 text-sm font-semibold ${isCorrect ? 'bg-primary/30 text-primary' : 'bg-destructive/10 text-destructive'}`}
+          className={`rounded-lg p-3 text-sm font-semibold ${isCorrect ? 'bg-accent text-accent-foreground' : 'bg-destructive/10 text-destructive'}`}
         >
           {isCorrect
             ? t('lesson.assemble.correct')

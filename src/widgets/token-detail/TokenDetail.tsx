@@ -15,11 +15,11 @@ export function TokenDetail({ token, note }: TokenDetailProps) {
     <div className="mx-auto w-full max-w-md pb-6">
       <div className="flex items-start justify-between">
         <div>
-          <div className="text-3xl">{token.surface}</div>
+          <div className="text-2xl">{token.surface}</div>
           <div className="mt-1 text-sm text-muted-foreground">
-            {token.reading} · {token.romaji} · [ {token.cyrillic} ]
+            {token.reading} • {token.romaji} • [ {token.cyrillic} ]
           </div>
-          <div className="mt-2 text-lg font-semibold">{localize(token.gloss)}</div>
+          <div className="mt-1 text-lg font-medium text-heading">{localize(token.gloss)}</div>
         </div>
         <FavouriteButton active={isFavourite} onToggle={toggle} disabled={isPending} />
       </div>

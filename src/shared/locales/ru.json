@@ -9,7 +9,8 @@
   "tracks": { "title": "Треки", "logout": "Выйти", "progress": "Пройдено {{done}} из {{total}}" },
   "logout": "Выйти",
   "lesson": {
-    "mainPhrase": "Главная фраза",
+    "mainPhrase": "Учим фразу",
+    "pattern": "Паттерн",
     "substitute": "Подставь",
     "back": "Назад",
     "next": "Далее",

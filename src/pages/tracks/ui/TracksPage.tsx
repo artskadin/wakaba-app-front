@@ -37,17 +37,20 @@ export function TracksPage() {
       <ul className="flex flex-col gap-3">
         {tracks?.map((track) => {
           const done = track.lessons.filter((lesson) => completedIds.has(lesson.id)).length;
+          const total = track.lessons.length;
 
           return (
             <li key={track.id}>
               <Link
                 to={`/tracks/${track.id}`}
-                className="block rounded-xl border p-4 transition hover:bg-accent"
+                className="flex flex-col gap-1 rounded-lg border p-3 transition hover:bg-accent"
               >
                 <div className="font-medium">{localize(track.title)}</div>
                 <div className="text-sm text-muted-foreground">{localize(track.description)}</div>
-                <div className="mt-1 text-xs text-primary">
-                  {t('tracks.progress', { done, total: track.lessons.length })}
+                <div
+                  className={`mt-1 text-xs ${done === total ? 'text-primary' : 'text-accent-foreground'}`}
+                >
+                  {t('tracks.progress', { done, total })}
                 </div>
               </Link>
             </li>

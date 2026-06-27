@@ -17,6 +17,7 @@ export function FavouriteButton({ active, onToggle, disabled }: FavouriteButtonP
       disabled={disabled}
       aria-pressed={active}
       aria-label={active ? t('favourite.remove') : t('favourite.add')}
+      className="cursor-pointer"
     >
       <Star
         className={`h-5 w-5 ${active ? 'fill-yellow-400 text-yellow-400' : 'text-muted-foreground'}`}

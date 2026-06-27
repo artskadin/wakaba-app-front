@@ -8,16 +8,25 @@ import { useRepos } from '@/shared/api/repos';
 import { StepView } from './StepView';
 import { TokenDetailDrawer } from '@/widgets/token-detail';
 import { VoiceToggle } from '@/shared/ui/VoiceToggle';
-import type { Voice } from '@/entities/settings';
-import { useVoiceStore } from '@/features/voice/model/voiceStore';
+import type { Theme, Voice } from '@/entities/settings';
+import { useVoiceStore } from '@/features/voice';
+import { ThemeToggle } from '@/shared/ui/ThemeToggle';
 
 interface LessonViewProps {
   bundle: LessonBundle;
   initialVoice?: Voice;
   onFinish: () => void;
+  theme: Theme;
+  onThemeChange: (t: Theme) => void;
 }
 
-export function LessonView({ bundle, initialVoice = 'm', onFinish }: LessonViewProps) {
+export function LessonView({
+  bundle,
+  initialVoice = 'm',
+  onFinish,
+  theme,
+  onThemeChange,
+}: LessonViewProps) {
   const { t } = useTranslation();
   const { progress: progressRepo } = useRepos();
   const queryClient = useQueryClient();
@@ -41,7 +50,6 @@ export function LessonView({ bundle, initialVoice = 'm', onFinish }: LessonViewP
 
   const steps = bundle.lesson.steps;
   const step = steps[stepIdx];
-  const progress = ((stepIdx + 1) / steps.length) * 100;
   const isLastStep = stepIdx === steps.length - 1;
   const requiresCompletion = step.kind === 'assemble';
   const canAdvance = !requiresCompletion || stepSolved;
@@ -65,19 +73,25 @@ export function LessonView({ bundle, initialVoice = 'm', onFinish }: LessonViewP
   }, [initialVoice, setVoice]);
 
   return (
-    <div className="mx-auto flex h-dvh max-w-md flex-col p-4">
-      <div className="mb-4">
-        <p className="text-sm text-muted-foreground">{localize(bundle.lesson.title)}</p>
-        <div className="mt-2 h-1.5 overflow-hidden rounded bg-muted">
-          <div
-            className="h-full rounded bg-primary transition-all"
-            style={{ width: `${progress}%` }}
-          />
+    <div data-component="lesson-view" className="mx-auto flex h-dvh max-w-md flex-col p-4">
+      <div className="flex flex-col gap-2 mb-2">
+        <div className="mt-2 flex gap-1">
+          {steps.map((_, i) => (
+            <div
+              key={i}
+              className={`h-1.5 flex-1 rounded-full transition-colors ${
+                i < stepIdx ? 'bg-primary' : i === stepIdx ? 'bg-primary/40' : 'bg-muted'
+              }`}
+            />
+          ))}
         </div>
 
         <div className="mb-4 flex items-center justify-between">
-          <p className="text-sm text-muted-foreground">{localize(bundle.lesson.title)}</p>
-          <VoiceToggle value={voice} onChange={setVoice} />
+          <h2 className="font-medium text-heading">{localize(bundle.lesson.title)}</h2>
+          <div className="flex items-center gap-2">
+            <ThemeToggle value={theme} onChange={onThemeChange} />
+            <VoiceToggle value={voice} onChange={setVoice} />
+          </div>
         </div>
       </div>
 
@@ -92,11 +106,16 @@ export function LessonView({ bundle, initialVoice = 'm', onFinish }: LessonViewP
       </div>
 
       <div className="mt-4 flex gap-3">
-        <Button variant="outline" disabled={stepIdx === 0} onClick={() => goToStep(stepIdx - 1)}>
+        <Button
+          className="cursor-pointer"
+          variant="outline"
+          disabled={stepIdx === 0}
+          onClick={() => goToStep(stepIdx - 1)}
+        >
           {t('lesson.back')}
         </Button>
         <Button
-          className="flex-1"
+          className="cursor-pointer flex-1"
           disabled={!canAdvance || saveProgress.isPending}
           onClick={handleNext}
         >

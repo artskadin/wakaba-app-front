@@ -13,8 +13,8 @@ export function GrammarNoteView({ note }: GrammarNoteViewProps) {
   const [showDeeper, setShowDeeper] = useState(false);
 
   return (
-    <section className="space-y-3">
-      <h3 className="text-sm font-semibold">{localize(note.title)}</h3>
+    <section className="space-y-3 mt-3">
+      <h3 className="text-sm font-medium">{localize(note.title)}</h3>
 
       {note.body.map((b, i) => (
         <GrammarBlockView key={i} block={b} />
@@ -24,7 +24,7 @@ export function GrammarNoteView({ note }: GrammarNoteViewProps) {
         <div className="pt-1">
           <button
             type="button"
-            className="text-xs font-medium text-primary hover:underline"
+            className="text-sm font-medium text-primary hover:underline cursor-pointer"
             onClick={() => setShowDeeper((v) => !v)}
           >
             {showDeeper ? t('grammar.collapse') : t('grammar.showDeeper')}

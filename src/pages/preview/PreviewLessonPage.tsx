@@ -5,12 +5,15 @@ import { validateBundle } from '@/features/preview/model/validateBundle';
 import { RepoProvider } from '@/shared/api/RepoProvider';
 import { useNavigate, useParams } from 'react-router';
 import { LessonView } from '../lesson/ui/LessonView';
+import { useThemeStore } from '@/features/theme';
 
 export function PreviewLessonPage() {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const { lessonId } = useParams<{ lessonId: string }>();
   const repos = usePreviewRepos();
+  const theme = useThemeStore((state) => state.theme);
+  const setTheme = useThemeStore((state) => state.setTheme);
 
   const bundle = previewContentRepo.getLessonBundle(lessonId!);
   const problems = validateBundle(bundle);
@@ -29,7 +32,12 @@ export function PreviewLessonPage() {
           </ul>
         </div>
       )}
-      <LessonView bundle={bundle} onFinish={() => navigate('/preview')} />
+      <LessonView
+        bundle={bundle}
+        onFinish={() => navigate('/preview')}
+        theme={theme}
+        onThemeChange={setTheme}
+      />
     </RepoProvider>
   );
 }
