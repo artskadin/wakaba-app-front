@@ -1,6 +1,6 @@
 import { useState, type SubmitEvent } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useNavigate } from 'react-router';
+import { Link, useNavigate } from 'react-router';
 import { useLogin } from '@/features/auth';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
@@ -14,15 +14,20 @@ export function LoginPage() {
   const [password, setPassword] = useState('');
 
   function handleSubmit(e: SubmitEvent<HTMLFormElement>) {
+    console.log('LoginPage');
     e.preventDefault();
     login.mutate({ email, password }, { onSuccess: () => navigate('/tracks') });
   }
 
   return (
-    <div className="mx-auto flex min-h-screen max-w-sm flex-col justify-center gap-4 p-6">
-      <h1 className="text-2x1 font-semibold">{t('login.title')}</h1>
+    <div
+      data-component="login-page"
+      className="mx-auto flex min-h-screen max-w-sm flex-col justify-center gap-4 p-6"
+    >
+      <h1 className="text-base font-semibold text-heading">{t('login.title')}</h1>
+
       <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-        <div className="flex flex-col gap-1.5">
+        <div className="flex flex-col gap-2">
           <Label htmlFor="email">{t('login.email')}</Label>
           <Input
             id="email"
@@ -33,7 +38,7 @@ export function LoginPage() {
           />
         </div>
 
-        <div className="flex flex-col gap-1.5">
+        <div className="flex flex-col gap-2">
           <Label htmlFor="password">{t('login.password')}</Label>
           <Input
             id="password"
@@ -46,7 +51,14 @@ export function LoginPage() {
 
         {login.isError && <p className="text-sm text-destructive">{t('login.error')}</p>}
 
-        <Button type="submit" disabled={login.isPending}>
+        <p className="mt-4 text-sm text-muted-foreground">
+          {t('auth.noAccount')}{' '}
+          <Link to="/register" className="text-primary hover:underline">
+            {t('auth.toRegister')}
+          </Link>
+        </p>
+
+        <Button type="submit" disabled={login.isPending} className="cursor-pointer">
           {login.isPending ? '...' : t('login.submit')}
         </Button>
       </form>

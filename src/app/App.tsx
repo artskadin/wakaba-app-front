@@ -3,15 +3,15 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { LoginPage } from '@/pages/login';
 import { TracksPage } from '@/pages/tracks';
 import { useInitAuth } from '@/features/auth';
-import { LessonPage } from '@/pages/lesson/ui/LessonPage';
+import { LessonPage } from '@/pages/lesson';
 import { TrackPage } from '@/pages/track';
 import { ProfilePage } from '@/pages/profile';
 import { HomePage } from '@/pages/home';
 import { FavouritePage } from '@/pages/favourite';
+import { RegisterPage } from '@/pages/register';
+import { PreviewIndexPage, PreviewLessonPage } from '@/pages/preview';
 import { RequireAuth } from './RequireAuth';
 import { AppLayout } from './AppLayout';
-import { PreviewIndexPage } from '@/pages/preview/PreviewIndexPage';
-import { PreviewLessonPage } from '@/pages/preview/PreviewLessonPage';
 
 const queryClient = new QueryClient();
 
@@ -23,6 +23,7 @@ export function App() {
       <BrowserRouter>
         {ready ? (
           <Routes>
+            <Route path="/register" element={<RegisterPage />} />
             <Route path="/login" element={<LoginPage />} />
 
             {import.meta.env.DEV && (

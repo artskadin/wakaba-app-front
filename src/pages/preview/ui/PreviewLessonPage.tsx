@@ -1,11 +1,11 @@
+import { useNavigate, useParams } from 'react-router';
 import { useTranslation } from 'react-i18next';
 import { previewContentRepo } from '@/features/preview/model/previewContent';
 import { usePreviewRepos } from '@/features/preview/model/previewRepos';
 import { validateBundle } from '@/features/preview/model/validateBundle';
 import { RepoProvider } from '@/shared/api/RepoProvider';
-import { useNavigate, useParams } from 'react-router';
-import { LessonView } from '../lesson/ui/LessonView';
 import { useThemeStore } from '@/features/theme';
+import { LessonView } from '@/pages/lesson';
 
 export function PreviewLessonPage() {
   const { t } = useTranslation();
@@ -35,6 +35,7 @@ export function PreviewLessonPage() {
       <LessonView
         bundle={bundle}
         onFinish={() => navigate('/preview')}
+        onExit={() => navigate('/preview')}
         theme={theme}
         onThemeChange={setTheme}
       />

@@ -8,12 +8,19 @@ import { settingsRepo } from '@/shared/api/settingsRepo';
 import { playAudio } from '@/shared/lib/audio/play';
 import { audioUrl } from '@/shared/lib/audio/url';
 import { VoiceToggle } from '@/shared/ui/VoiceToggle';
+import { ThemeToggle } from '@/shared/ui/ThemeToggle';
+import { useThemeSetting } from '@/features/theme/useThemeSetting';
+import { PageHeader } from '@/shared/ui/PageHeader';
 
-function Row({ label, value }: { label: string; value: string }) {
+function Row({ label, value }: { label: string; value?: string | null }) {
+  const { t } = useTranslation();
+
   return (
     <div className="flex justify-between text-sm">
       <span className="text-muted-foreground">{label}</span>
-      <span className="font-medium">{value}</span>
+      <span className={`${value ? 'font-medium' : 'text-muted-foreground'}`}>
+        {value ?? t('profile.empty')}
+      </span>
     </div>
   );
 }
@@ -23,6 +30,8 @@ export function ProfilePage() {
   const queryClient = useQueryClient();
   const user = useAuthStore((s) => s.user);
   const setUser = useAuthStore((s) => s.setUser);
+
+  const { theme, setTheme } = useThemeSetting();
 
   const { data: progress } = useQuery({
     queryKey: ['progress'],
@@ -65,13 +74,28 @@ export function ProfilePage() {
   }
 
   if (!user) {
-    return <div className="p-6">Загрузка информации о пользователе...</div>;
+    return (
+      <div data-component="profile-page" className="p-6">
+        Загрузка информации о пользователе...
+      </div>
+    );
   }
 
   return (
-    <div className="p-6">
-      <h1 className=" text-2xl font-semibold">{t('nav.profile')}</h1>
-      <div className="mt-6 flex flex-col gap-3 rounded-xl border p-4">
+    <div data-component="profile-page" className="p-6">
+      <PageHeader>
+        <div className="flex items-center justify-between">
+          <h1 className="text-lg font-semibold text-heading">{t('nav.profile')}</h1>
+          {/*<Button variant="outline" onClick={() => setUser(null)}>
+            {t('tracks.logout')}
+          </Button>*/}
+          <ThemeToggle value={theme} onChange={setTheme} />
+        </div>
+      </PageHeader>
+
+      <div className="flex flex-col gap-3 rounded-lg border p-4">
+        <Row label={t('profile.firstName')} value={user.firstName} />
+        <Row label={t('profile.lastName')} value={user.lastName} />
         <Row label={t('profile.email')} value={user.email} />
         <Row
           label={t('profile.registered')}

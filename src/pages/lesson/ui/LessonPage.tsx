@@ -25,6 +25,7 @@ export function LessonPage() {
     <LessonView
       bundle={bundle}
       onFinish={() => navigate('/tracks')}
+      onExit={() => navigate(`/tracks/${bundle.lesson.trackId}`)}
       theme={theme}
       onThemeChange={setTheme}
     />

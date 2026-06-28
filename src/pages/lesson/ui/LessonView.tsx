@@ -11,11 +11,24 @@ import { VoiceToggle } from '@/shared/ui/VoiceToggle';
 import type { Theme, Voice } from '@/entities/settings';
 import { useVoiceStore } from '@/features/voice';
 import { ThemeToggle } from '@/shared/ui/ThemeToggle';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from '@/components/ui/alert-dialog';
+import { ArrowLeft } from 'lucide-react';
 
 interface LessonViewProps {
   bundle: LessonBundle;
   initialVoice?: Voice;
   onFinish: () => void;
+  onExit: () => void;
   theme: Theme;
   onThemeChange: (t: Theme) => void;
 }
@@ -24,6 +37,7 @@ export function LessonView({
   bundle,
   initialVoice = 'm',
   onFinish,
+  onExit,
   theme,
   onThemeChange,
 }: LessonViewProps) {
@@ -90,6 +104,34 @@ export function LessonView({
 
   return (
     <div data-component="lesson-view" className="mx-auto flex h-dvh max-w-md flex-col p-4">
+      <AlertDialog>
+        <AlertDialogTrigger asChild className="mb-3">
+          <Button
+            type="button"
+            size="icon"
+            variant="outline"
+            aria-label={t('lesson.exit')}
+            className="cursor-pointer"
+          >
+            <ArrowLeft />
+          </Button>
+        </AlertDialogTrigger>
+        <AlertDialogContent className="rounded-lg">
+          <AlertDialogHeader>
+            <AlertDialogTitle>{t('lesson.exitTitle')}</AlertDialogTitle>
+            <AlertDialogDescription>{t('lesson.exitDescription')}</AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel className="cursor-pointer">
+              {t('lesson.exitCancel')}
+            </AlertDialogCancel>
+            <AlertDialogAction className="cursor-pointer" onClick={onExit}>
+              {t('lesson.exitConfirm')}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+
       <div className="flex flex-col gap-2 mb-2">
         <div className="mt-2 flex gap-1">
           {steps.map((_, i) => (

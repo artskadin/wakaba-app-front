@@ -6,6 +6,7 @@ import { useQuery } from '@tanstack/react-query';
 import { contentRepo } from '@/shared/api/contentRepo';
 import { localize } from '@/shared/lib/localize';
 import { progressRepo } from '@/shared/api/progressRepo';
+import { PageHeader } from '@/shared/ui/PageHeader';
 
 export function TracksPage() {
   const { t } = useTranslation();
@@ -24,13 +25,15 @@ export function TracksPage() {
   );
 
   return (
-    <div className="mx-auto max-w-2xl p-6">
-      <div className="mb-6 flex items-center justify-between">
-        <h1 className="text-2x1 font-semibold">{t('tracks.title')}</h1>
-        <Button variant="outline" onClick={() => setUser(null)}>
-          {t('tracks.logout')}
-        </Button>
-      </div>
+    <div data-component="tracks-page" className="mx-auto max-w-2xl p-6">
+      <PageHeader>
+        <div className="flex items-center justify-between">
+          <h1 className="text-lg font-semibold text-heading">{t('tracks.title')}</h1>
+          <Button variant="outline" onClick={() => setUser(null)}>
+            {t('tracks.logout')}
+          </Button>
+        </div>
+      </PageHeader>
 
       {isPending && <p className="text-muted-foreground">{t('tracks.title')}...</p>}
 
@@ -43,7 +46,7 @@ export function TracksPage() {
             <li key={track.id}>
               <Link
                 to={`/tracks/${track.id}`}
-                className="flex flex-col gap-1 rounded-lg border p-3 transition hover:bg-accent"
+                className="flex flex-col gap-1 text-sm rounded-lg border p-3 transition hover:bg-accent"
               >
                 <div className="font-medium">{localize(track.title)}</div>
                 <div className="text-sm text-muted-foreground">{localize(track.description)}</div>

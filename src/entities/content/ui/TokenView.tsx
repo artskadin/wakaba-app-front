@@ -7,7 +7,6 @@ interface TokenViewProps {
 
 export function TokenView({ token, isSlot }: TokenViewProps) {
   const isParticle = token.type === 'particle' || token.type === 'ending';
-  console.log({ token });
 
   return (
     <>

@@ -10,7 +10,16 @@
     "copy": "Копировать",
     "copied": "Скопировано"
   },
-  "tracks": { "title": "Треки", "logout": "Выйти", "progress": "Пройдено {{done}} из {{total}}" },
+  "track": {
+    "title": "Трек",
+    "list": "Список лекций",
+    "recomendation": "Лекции расположены в порядке, в котором мы рекомендуем их проходить. Однако этот порядок соблюдать необязательно."
+  },
+  "tracks": {
+    "title": "Треки",
+    "logout": "Выйти",
+    "progress": "Пройдено лекций {{done}} из {{total}}"
+  },
   "logout": "Выйти",
   "lesson": {
     "mainPhrase": "Учим фразу",
@@ -20,6 +29,11 @@
     "next": "Далее",
     "finish": "Готово",
     "loading": "Загрузка…",
+    "exit": "Выйти",
+    "exitTitle": "Выйти из урока?",
+    "exitDescription": "Прогресс урока не сохранится",
+    "exitCancel": "Остаться",
+    "exitConfirm": "Выйти",
     "stepComingSoon": "Шаг «{{kind}}» — скоро",
     "assemble": {
       "title": "Собери фразу",
@@ -46,6 +60,9 @@
   "home": { "greeting": "С возвращением", "subtitle": "Продолжим учить японский?" },
   "profile": {
     "email": "Почта",
+    "firstName": "Имя",
+    "lastName": "Фамилия",
+    "empty": "Пусто",
     "registered": "Зарегистрирован",
     "completed": "Пройдено лекций",
     "voiceTitle": "Голос озвучки",
@@ -65,5 +82,17 @@
     "empty": "Нет черновиков. Положи JSON в features/preview/model/drafts/.",
     "integrityProblems": "Проблемы целостности ({{count}}):"
   },
-  "favourite": { "add": "В избранное", "remove": "Убрать из избранного" }
+  "favourite": { "add": "В избранное", "remove": "Убрать из избранного" },
+  "auth": {
+    "registerTitle": "Регистрация",
+    "email": "Почта",
+    "password": "Пароль",
+    "registerSubmit": "Зарегистрироваться",
+    "registering": "Регистрируем…",
+    "registerError": "Не удалось зарегистрироваться. Возможно, почта уже занята.",
+    "haveAccount": "Уже есть аккаунт?",
+    "toLogin": "Войти",
+    "noAccount": "Нет аккаунта?",
+    "toRegister": "Зарегистрироваться"
+  }
 }
