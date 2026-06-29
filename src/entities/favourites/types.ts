@@ -2,12 +2,10 @@ import type { GrammarNote, LocalizedText, Token } from '@/entities/content';
 
 export type FavouriteItemType = 'token' | 'sentence';
 
-export interface FavouriteToken {
-  id: string;
-  surface: string;
-  romaji: string;
-  cyrillic: string;
-  gloss: LocalizedText;
+export interface FavouriteSentenceToken {
+  token: Token;
+  slotType: string | null;
+  isFocusSlot: boolean;
 }
 
 export interface FavouriteSentence {
@@ -15,6 +13,7 @@ export interface FavouriteSentence {
   romaji: string;
   translation: LocalizedText;
   cyrillicGuide: LocalizedText;
+  tokens: FavouriteSentenceToken[];
 }
 
 export interface Favourite {
@@ -22,7 +21,7 @@ export interface Favourite {
   itemType: FavouriteItemType;
   tokenId: string | null;
   sentenceId: string | null;
-  token: FavouriteToken | null;
+  token: Token | null;
   sentence: FavouriteSentence | null;
   createdAt: string;
 }

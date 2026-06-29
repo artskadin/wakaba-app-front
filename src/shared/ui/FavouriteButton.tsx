@@ -1,3 +1,4 @@
+import { Button } from '@/components/ui/button';
 import { Star } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
@@ -11,17 +12,17 @@ export function FavouriteButton({ active, onToggle, disabled }: FavouriteButtonP
   const { t } = useTranslation();
 
   return (
-    <button
+    <Button
       type="button"
       onClick={onToggle}
+      variant="ghost"
+      size="icon"
       disabled={disabled}
       aria-pressed={active}
       aria-label={active ? t('favourite.remove') : t('favourite.add')}
       className="cursor-pointer"
     >
-      <Star
-        className={`h-5 w-5 ${active ? 'fill-yellow-400 text-yellow-400' : 'text-muted-foreground'}`}
-      />
-    </button>
+      <Star className={`${active ? 'fill-yellow-400 text-yellow-400' : 'text-muted-foreground'}`} />
+    </Button>
   );
 }

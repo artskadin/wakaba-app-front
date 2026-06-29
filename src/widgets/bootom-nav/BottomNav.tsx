@@ -19,7 +19,7 @@ export function BottomNav() {
           to={to}
           end={end}
           className={({ isActive }) =>
-            `flex flex-col items-center gap-0.5 px-4 py-1 text-xs ${isActive ? 'text-primary' : 'text-muted-foreground'}`
+            `flex flex-col items-center gap-0.5 px-4 py-1 text-xs ${isActive ? 'text-primary' : 'text-muted-foreground'} hover:text-primary/90`
           }
         >
           <Icon className="h-5 w-5" />

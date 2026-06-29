@@ -1,21 +1,52 @@
+import { AudioLinesIcon } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
+import { Button } from '@/components/ui/button';
+import type { ResolvedToken } from '@/entities/content';
+import { TokenRow } from '@/entities/content/ui/TokenRow';
 import type { FavouriteSentence } from '@/entities/favourites';
 import { useSentenceFavourite } from '@/features/favourites';
 import { localize } from '@/shared/lib/localize';
+import { CopyButton } from '@/shared/ui/CopyButton';
 import { FavouriteButton } from '@/shared/ui/FavouriteButton';
 
-export function SentenceFavouriteItem({ sentence }: { sentence: FavouriteSentence }) {
+interface SentenceFavouriteItemProps {
+  sentence: FavouriteSentence;
+  onOpenToken: (tokenId: string) => void;
+}
+
+export function SentenceFavouriteItem({ sentence, onOpenToken }: SentenceFavouriteItemProps) {
+  const { t } = useTranslation();
   const { isFavourite, toggle, isPending } = useSentenceFavourite(sentence.id);
 
+  const resolved: ResolvedToken[] = sentence.tokens.map((st) => ({
+    token: st.token,
+    ref: { tokenId: st.token.id, slotType: st.slotType ?? undefined, isFocusSlot: st.isFocusSlot },
+  }));
+  const japanese = sentence.tokens.map((st) => st.token.surface).join('');
+
   return (
-    <li className="flex items-start justify-between gap-2 rounded-lg border p-3">
-      <div className="flex flex-col">
-        <span className="text-sm text-muted-foreground">{sentence.romaji}</span>
-        <span className="text-sm">
-          {sentence.cyrillicGuide ? ` · [ ${localize(sentence.cyrillicGuide)} ]` : ''}
-        </span>
-        <span className="text-sm text-heading">{localize(sentence.translation)}</span>
+    <li className="flex flex-col gap-2 rounded-lg border px-3 py-2">
+      <div className="flex items-start justify-between gap-2">
+        <div className="flex flex-col gap-1">
+          <TokenRow tokens={resolved} onTokenClick={(r) => onOpenToken(r.token.id)} />
+          <span className="text-base text-heading">{localize(sentence.translation)}</span>
+        </div>
+
+        <FavouriteButton active={isFavourite} onToggle={toggle} disabled={isPending} />
       </div>
-      <FavouriteButton active={isFavourite} onToggle={toggle} disabled={isPending} />
+
+      <div className="flex items-center gap-1 border-t pt-2 mt-1">
+        <Button
+          type="button"
+          variant="ghost"
+          size="sm"
+          className="text-muted-foreground transition-colors hover:text-foreground cursor-pointer"
+        >
+          <AudioLinesIcon /> {t('common.listen')}
+        </Button>
+
+        <CopyButton text={japanese} />
+      </div>
     </li>
   );
 }

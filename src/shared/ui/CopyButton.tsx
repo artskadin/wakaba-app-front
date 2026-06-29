@@ -11,12 +11,20 @@ export function CopyButton({ text }: { text: string }) {
     <Button
       type="button"
       variant="ghost"
-      size="icon"
+      size="sm"
       onClick={() => copy(text)}
       aria-label={copied ? t('common.copied') : t('common.copy')}
       className="text-muted-foreground transition-colors hover:text-foreground cursor-pointer"
     >
-      {copied ? <Check className="text-primary" /> : <Copy />}
+      {copied ? (
+        <>
+          <Check className="text-primary" /> {t('common.copied')}
+        </>
+      ) : (
+        <>
+          <Copy /> {t('common.hieroglyphs')}
+        </>
+      )}
     </Button>
   );
 }

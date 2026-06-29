@@ -35,11 +35,20 @@ api.interceptors.response.use(
       | (InternalAxiosRequestConfig & { _retry?: boolean })
       | undefined;
 
-    if (error.response?.status === 401 && original && !original._retry) {
+    const url = original?.url ?? '';
+    const isAuthRoute =
+      url.includes('/auth/login') ||
+      url.includes('/auth/register') ||
+      url.includes('/auth/refresh');
+
+    if (error.response?.status === 401 && original && !original._retry && !isAuthRoute) {
       original._retry = true;
 
       try {
-        refreshing ??= refreshAccess();
+        refreshing ??= refreshAccess().finally(() => {
+          refreshing = null;
+        });
+
         const token = await refreshing;
         original.headers.Authorization = `Bearer ${token}`;
 
@@ -47,8 +56,6 @@ api.interceptors.response.use(
       } catch (e) {
         tokenStore.set(null);
         throw e;
-      } finally {
-        refreshing = null;
       }
     }
 

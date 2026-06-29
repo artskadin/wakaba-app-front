@@ -1,7 +1,5 @@
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router';
-import { useAuthStore } from '@/features/auth';
-import { Button } from '@/components/ui/button';
 import { useQuery } from '@tanstack/react-query';
 import { contentRepo } from '@/shared/api/contentRepo';
 import { localize } from '@/shared/lib/localize';
@@ -10,7 +8,6 @@ import { PageHeader } from '@/shared/ui/PageHeader';
 
 export function TracksPage() {
   const { t } = useTranslation();
-  const setUser = useAuthStore((s) => s.setUser);
   const { data: tracks, isPending } = useQuery({
     queryKey: ['tracks'],
     queryFn: () => contentRepo.getTracks(),
@@ -29,9 +26,6 @@ export function TracksPage() {
       <PageHeader>
         <div className="flex items-center justify-between">
           <h1 className="text-lg font-semibold text-heading">{t('tracks.title')}</h1>
-          <Button variant="outline" onClick={() => setUser(null)}>
-            {t('tracks.logout')}
-          </Button>
         </div>
       </PageHeader>
 
