@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'sonner';
 import { Disc3, Headphones, Mic, Play, Square } from 'lucide-react';
 import {
   resolveSentence,
@@ -14,7 +15,7 @@ import { Button } from '@/components/ui/button';
 import { audioUrl } from '@/shared/lib/audio/url';
 import { CopyButton, FavouriteButton } from '@/shared/ui';
 import { useSentenceFavourite } from '@/features/favourites';
-import { formatTime } from '@/shared/lib/audio/formatTIme';
+import { formatTime } from '@/shared/lib/audio/formatTime';
 import { useAudioLockReporter } from '@/shared/lib/audio/useAudioLockReporter';
 
 interface PronounceCardProps {
@@ -25,7 +26,7 @@ interface PronounceCardProps {
   initialRevealed?: boolean;
   onReveal?: () => void;
   onRecorded?: (data: Blob | null) => void;
-  onTokenClick?: (redolvedToken: ResolvedToken) => void;
+  onTokenClick?: (resolvedToken: ResolvedToken) => void;
 }
 
 export function PronounceCard({
@@ -43,7 +44,11 @@ export function PronounceCard({
   const { sentence, tokens } = resolveSentence(bundle, sentenceId);
   const { isFavourite, toggle, isPending } = useSentenceFavourite(sentenceId);
   const [revealed, setRevealed] = useState(initialRevealed);
-  const rec = usePronounce({ onRecorded });
+  const rec = usePronounce({
+    onRecorded,
+    onError: (kind) =>
+      toast.error(t(kind === 'record' ? 'common.recordFailed' : 'common.playbackFailed')),
+  });
   const lockedByOther = useAudioLockReporter(rec.mode, lockKey);
   const japanese = tokens.map((x) => x.token.surface).join('');
 

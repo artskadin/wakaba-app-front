@@ -5,6 +5,9 @@ import { TokenRow } from '@/entities/content/ui/TokenRow';
 import { useTokenFavourite } from '@/features/favourites';
 import { localize } from '@/shared/lib/localize';
 import { CopyButton, FavouriteButton } from '@/shared/ui';
+import { useVoiceStore } from '@/features/voice';
+import { useListen } from '@/shared/lib/audio/useListen';
+import { audioUrl } from '@/shared/lib/audio/url';
 
 interface FavouriteTokenItemProps {
   token: Token;
@@ -13,6 +16,9 @@ interface FavouriteTokenItemProps {
 
 export function FavouriteTokenItem({ token, onOpenToken }: FavouriteTokenItemProps) {
   const { isFavourite, toggle, isPending } = useTokenFavourite(token.id);
+  const voice = useVoiceStore((s) => s.voice);
+  const listen = useListen();
+
   const resolved: ResolvedToken[] = [{ token, ref: { tokenId: token.id } }];
 
   return (
@@ -29,12 +35,12 @@ export function FavouriteTokenItem({ token, onOpenToken }: FavouriteTokenItemPro
         <Button
           type="button"
           variant="ghost"
-          size="default"
-          className="cursor-pointer text-muted-foreground transition-colors hover:text-foreground"
-          // onClick — на шаге звука
+          className="text-muted-foreground transition-colors hover:text-foreground cursor-pointer"
+          onClick={() => listen(audioUrl('tokens', token.id, voice))}
         >
           <Headphones />
         </Button>
+
         <CopyButton text={token.surface} />
       </div>
     </li>

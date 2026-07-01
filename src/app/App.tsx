@@ -14,6 +14,7 @@ import { AppLayout } from './AppLayout';
 import { ErrorBoundary } from './ErrorBoundary';
 import { RedirectAuth } from './RedirectAuth';
 import { AuthGate } from './AuthGate';
+import { AppToaster } from '@/shared/ui/AppToaster';
 
 const queryClient = new QueryClient();
 
@@ -48,6 +49,8 @@ export function App() {
               </Route>
             </Routes>
           </BrowserRouter>
+
+          <AppToaster />
         </AuthGate>
       </ErrorBoundary>
     </QueryClientProvider>

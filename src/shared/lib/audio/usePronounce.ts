@@ -2,13 +2,17 @@ import { useEffect, useRef, useState } from 'react';
 
 export type PronounceMode = 'idle' | 'recording' | 'playing-sentence' | 'playing-self';
 
-export function usePronounce(opts?: { onRecorded?: (blob: Blob | null) => void }) {
+export function usePronounce(opts?: {
+  onRecorded?: (blob: Blob | null) => void;
+  onError?: (kind: 'record' | 'play') => void;
+}) {
   const [mode, setMode] = useState<PronounceMode>('idle');
   const [recordSeconds, setRecordSeconds] = useState(0);
   const [selfDuration, setSelfDuration] = useState(0);
   const [selfRemaining, setSelfRemaining] = useState(0);
   const [hasRecording, setHasRecording] = useState(false);
 
+  const streamRef = useRef<MediaStream | null>(null);
   const recordRef = useRef<MediaRecorder | null>(null);
   const chunksRef = useRef<Blob[]>([]);
   const blobRef = useRef<Blob | null>(null);
@@ -17,9 +21,13 @@ export function usePronounce(opts?: { onRecorded?: (blob: Blob | null) => void }
   const tickRef = useRef<number | null>(null);
   const recSecRef = useRef(0);
   const onRecordedRef = useRef(opts?.onRecorded);
+  const onErrorRef = useRef(opts?.onError);
 
   useEffect(() => {
     onRecordedRef.current = opts?.onRecorded;
+  });
+  useEffect(() => {
+    onErrorRef.current = opts?.onError;
   });
 
   const clearTick = () => {
@@ -37,38 +45,46 @@ export function usePronounce(opts?: { onRecorded?: (blob: Blob | null) => void }
   };
 
   async function startRecording() {
-    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-    const recorder = new MediaRecorder(stream);
-    chunksRef.current = [];
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      streamRef.current = stream;
 
-    recorder.ondataavailable = (e) => e.data.size && chunksRef.current.push(e.data);
-    recorder.onstop = () => {
-      const blob = new Blob(chunksRef.current, { type: recorder.mimeType });
-      blobRef.current = blob;
+      const recorder = new MediaRecorder(stream);
+      chunksRef.current = [];
 
-      if (selfUrlRef.current) {
-        URL.revokeObjectURL(selfUrlRef.current);
-      }
+      recorder.ondataavailable = (e) => e.data.size && chunksRef.current.push(e.data);
+      recorder.onstop = () => {
+        const blob = new Blob(chunksRef.current, { type: recorder.mimeType });
+        blobRef.current = blob;
 
-      selfUrlRef.current = URL.createObjectURL(blob);
+        if (selfUrlRef.current) {
+          URL.revokeObjectURL(selfUrlRef.current);
+        }
 
-      setSelfDuration(recSecRef.current);
-      setHasRecording(true);
+        selfUrlRef.current = URL.createObjectURL(blob);
 
-      stream.getTracks().forEach((t) => t.stop());
-      onRecordedRef.current?.(blob);
-    };
+        setSelfDuration(recSecRef.current);
+        setHasRecording(true);
 
-    recordRef.current = recorder;
-    recorder.start();
-    recSecRef.current = 0;
-    setRecordSeconds(0);
-    setMode('recording');
-    clearTick();
-    tickRef.current = window.setInterval(() => {
-      recSecRef.current += 1;
-      setRecordSeconds(recSecRef.current);
-    }, 1000);
+        stream.getTracks().forEach((t) => t.stop());
+        streamRef.current = null;
+        onRecordedRef.current?.(blob);
+      };
+
+      recordRef.current = recorder;
+      recorder.start();
+      recSecRef.current = 0;
+      setRecordSeconds(0);
+      setMode('recording');
+      clearTick();
+      tickRef.current = window.setInterval(() => {
+        recSecRef.current += 1;
+        setRecordSeconds(recSecRef.current);
+      }, 1000);
+    } catch {
+      reset();
+      onErrorRef.current?.('record');
+    }
   }
 
   function stopRecording() {
@@ -88,8 +104,13 @@ export function usePronounce(opts?: { onRecorded?: (blob: Blob | null) => void }
     audio.ontimeupdate = () =>
       setSelfRemaining(Math.max(0, selfDuration - Math.floor(audio.currentTime)));
     audio.onended = () => reset();
-    audio.play().catch(reset);
     setMode('playing-self');
+    audio.play().catch((err: unknown) => {
+      reset();
+      if (!(err instanceof DOMException && err.name === 'AbortError')) {
+        onErrorRef.current?.('play');
+      }
+    });
   }
 
   function playSentence(url: string) {
@@ -97,8 +118,14 @@ export function usePronounce(opts?: { onRecorded?: (blob: Blob | null) => void }
     audio.src = url;
     audio.ontimeupdate = null;
     audio.onended = () => reset();
-    audio.play().catch(reset);
     setMode('playing-sentence');
+    audio.play().catch((err: unknown) => {
+      reset();
+
+      if (!(err instanceof DOMException && err.name === 'AbortError')) {
+        onErrorRef.current?.('play');
+      }
+    });
   }
 
   function stop() {
@@ -109,6 +136,13 @@ export function usePronounce(opts?: { onRecorded?: (blob: Blob | null) => void }
   useEffect(
     () => () => {
       clearTick();
+
+      if (recordRef.current) {
+        recordRef.current.onstop = null;
+      }
+
+      streamRef.current?.getTracks().forEach((t) => t.stop());
+
       if (selfUrlRef.current) {
         URL.revokeObjectURL(selfUrlRef.current);
       }

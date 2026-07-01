@@ -2,11 +2,17 @@ import { useTranslation } from 'react-i18next';
 import { Link, useParams } from 'react-router';
 import { Check, InfoIcon } from 'lucide-react';
 import { useQuery } from '@tanstack/react-query';
-import { Alert, AlertDescription } from '@/components/ui/alert';
 import { contentRepo } from '@/shared/api/contentRepo';
 import { localize } from '@/shared/lib/localize';
 import { progressRepo } from '@/shared/api/progressRepo';
 import { PageHeader } from '@/shared/ui';
+import { Button } from '@/components/ui/button';
+import {
+  Popover,
+  PopoverContent,
+  PopoverDescription,
+  PopoverTrigger,
+} from '@/components/ui/popover';
 
 export function TrackPage() {
   const { t } = useTranslation();
@@ -41,14 +47,23 @@ export function TrackPage() {
         </h1>
       </PageHeader>
 
-      <p className="text-base text-muted-foreground">{localize(track.description)}</p>
+      <p className="text-sm text-muted-foreground">{localize(track.description)}</p>
 
-      <Alert className="mt-4">
-        <InfoIcon />
-        <AlertDescription>{t('track.recomendation')}</AlertDescription>
-      </Alert>
+      <div className="flex items-center mt-5 gap-1">
+        <span className="text-sm text-muted-foreground uppercase">{t('track.list')}</span>
 
-      <p className="mt-5 text-sm text-muted-foreground uppercase">{t('track.list')}</p>
+        <Popover>
+          <PopoverTrigger asChild>
+            <Button variant="ghost" className="cursor-pointer">
+              <InfoIcon />
+            </Button>
+          </PopoverTrigger>
+
+          <PopoverContent className="max-w-xs text-sm">
+            <PopoverDescription>{t('track.recomendation')}</PopoverDescription>
+          </PopoverContent>
+        </Popover>
+      </div>
 
       <ul className="mt-2 flex flex-col gap-3">
         {track.lessons.map((lesson) => (

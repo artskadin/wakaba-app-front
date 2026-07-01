@@ -6,6 +6,9 @@ import type { FavouriteSentence } from '@/entities/favourites';
 import { useSentenceFavourite } from '@/features/favourites';
 import { localize } from '@/shared/lib/localize';
 import { CopyButton, FavouriteButton } from '@/shared/ui';
+import { useListen } from '@/shared/lib/audio/useListen';
+import { audioUrl } from '@/shared/lib/audio/url';
+import { useVoiceStore } from '@/features/voice';
 
 interface SentenceFavouriteItemProps {
   sentence: FavouriteSentence;
@@ -14,6 +17,8 @@ interface SentenceFavouriteItemProps {
 
 export function SentenceFavouriteItem({ sentence, onOpenToken }: SentenceFavouriteItemProps) {
   const { isFavourite, toggle, isPending } = useSentenceFavourite(sentence.id);
+  const listen = useListen();
+  const voice = useVoiceStore((s) => s.voice);
 
   const resolved: ResolvedToken[] = sentence.tokens.map((st) => ({
     token: st.token,
@@ -36,8 +41,8 @@ export function SentenceFavouriteItem({ sentence, onOpenToken }: SentenceFavouri
         <Button
           type="button"
           variant="ghost"
-          size="default"
           className="text-muted-foreground transition-colors hover:text-foreground cursor-pointer"
+          onClick={() => listen(audioUrl('sentences', sentence.id, voice))}
         >
           <Headphones />
         </Button>

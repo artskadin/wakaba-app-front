@@ -156,8 +156,14 @@ export function LessonView({
           </div>
 
           <AlertDialogFooter>
-            <AlertDialogCancel>{t('lesson.finishBlock.stay')}</AlertDialogCancel>
-            <AlertDialogAction onClick={confirmFinish} disabled={saveProgress.isPending}>
+            <AlertDialogCancel className="cursor-pointer">
+              {t('lesson.finishBlock.stay')}
+            </AlertDialogCancel>
+            <AlertDialogAction
+              onClick={confirmFinish}
+              disabled={saveProgress.isPending}
+              className="cursor-pointer"
+            >
               {t('lesson.finishBlock.exit')}
             </AlertDialogAction>
           </AlertDialogFooter>

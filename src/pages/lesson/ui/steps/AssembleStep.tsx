@@ -12,8 +12,8 @@ import { useVoiceStore } from '@/features/voice';
 import { Button } from '@/components/ui/button';
 import { Headphones } from 'lucide-react';
 import { CopyButton } from '@/shared/ui';
-import { playAudio } from '@/shared/lib/audio/play';
 import { audioUrl } from '@/shared/lib/audio/url';
+import { useListen } from '@/shared/lib/audio/useListen';
 
 type AssembleStepDef = Extract<LessonStep, { kind: 'assemble' }>;
 
@@ -33,6 +33,7 @@ export function AssembleStep({ bundle, step, solved, onSolvedChange }: AssembleS
     solved ? Array.from({ length: tokenCount }, (_, i) => i) : [],
   );
   const voice = useVoiceStore((s) => s.voice);
+  const listen = useListen();
   const japanese = tokens.map((t) => t.token.surface).join('');
 
   const isSolved = (order: number[]) =>
@@ -81,7 +82,7 @@ export function AssembleStep({ bundle, step, solved, onSolvedChange }: AssembleS
               variant="ghost"
               size="default"
               className="text-muted-foreground transition-colors hover:text-foreground cursor-pointer"
-              onClick={() => playAudio(audioUrl('sentences', step.sentenceId, voice))}
+              onClick={() => listen(audioUrl('sentences', step.sentenceId, voice))}
             >
               <Headphones />
             </Button>

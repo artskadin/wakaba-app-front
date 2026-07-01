@@ -9,5 +9,9 @@ export function playAudio(url: string): Promise<void> {
   const audio = new Audio(url);
   current = audio;
 
-  return audio.play().catch(() => {});
+  return audio.play().catch((err: unknown) => {
+    if (err instanceof DOMException && err.name === 'AbortError') return;
+
+    throw err;
+  });
 }

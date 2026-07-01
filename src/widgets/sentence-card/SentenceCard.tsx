@@ -12,6 +12,8 @@ import { usePronounce } from '@/shared/lib/audio/usePronounce';
 import { useAudioLockReporter } from '@/shared/lib/audio/useAudioLockReporter';
 import { audioUrl } from '@/shared/lib/audio/url';
 import { useVoiceStore } from '@/features/voice';
+import { toast } from 'sonner';
+import { useTranslation } from 'react-i18next';
 
 interface SentenceCardProps {
   bundle: LessonBundle;
@@ -30,12 +32,13 @@ export function SentenceCard({
   lockKey,
   onTokenClick,
 }: SentenceCardProps) {
+  const { t } = useTranslation();
   const { isFavourite, toggle, isPending } = useSentenceFavourite(sentenceId);
   const { tokens } = resolveSentence(bundle, sentenceId);
   const japanese = tokens.map((item) => item.token.surface).join('');
 
   const voice = useVoiceStore((s) => s.voice);
-  const player = usePronounce();
+  const player = usePronounce({ onError: () => toast.error(t('common.playbackFailed')) });
   const lockByOther = useAudioLockReporter(player.mode, lockKey);
 
   return (

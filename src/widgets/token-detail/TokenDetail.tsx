@@ -1,12 +1,12 @@
+import { Headphones } from 'lucide-react';
 import { GrammarNoteView, type GrammarNote, type Token } from '@/entities/content';
 import { localize } from '@/shared/lib/localize';
 import { useTokenFavourite } from '@/features/favourites';
 import { CopyButton, FavouriteButton } from '@/shared/ui';
 import { useVoiceStore } from '@/features/voice';
 import { Button } from '@/components/ui/button';
-import { Headphones } from 'lucide-react';
-import { playAudio } from '@/shared/lib/audio/play';
 import { audioUrl } from '@/shared/lib/audio/url';
+import { useListen } from '@/shared/lib/audio/useListen';
 
 interface TokenDetailProps {
   token: Token;
@@ -15,6 +15,7 @@ interface TokenDetailProps {
 
 export function TokenDetail({ token, note }: TokenDetailProps) {
   const { isFavourite, toggle, isPending } = useTokenFavourite(token.id);
+  const listen = useListen();
   const voice = useVoiceStore((s) => s.voice);
 
   return (
@@ -27,7 +28,7 @@ export function TokenDetail({ token, note }: TokenDetailProps) {
             <Button
               type="button"
               variant="ghost"
-              onClick={() => playAudio(audioUrl('tokens', token.id, voice))}
+              onClick={() => listen(audioUrl('tokens', token.id, voice))}
               className="cursor-pointer text-primary hover:text-foreground"
             >
               <Headphones />
