@@ -1,6 +1,11 @@
 import { tokenStore } from './token';
 import axios, { AxiosError, type InternalAxiosRequestConfig } from 'axios';
 
+let onUnauthorized: (() => void) | null = null;
+export function setOnUnauthorized(cb: () => void) {
+  onUnauthorized = cb;
+}
+
 const API_URL = import.meta.env.VITE_API_URL ?? 'http://localhost:3000';
 
 export const api = axios.create({ baseURL: API_URL, withCredentials: true });
@@ -55,6 +60,8 @@ api.interceptors.response.use(
         return api(original);
       } catch (e) {
         tokenStore.set(null);
+        onUnauthorized?.();
+
         throw e;
       }
     }

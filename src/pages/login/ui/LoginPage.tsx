@@ -5,6 +5,7 @@ import { useLogin } from '@/features/auth';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
+import { PasswordInput } from '@/shared/ui';
 
 export function LoginPage() {
   const { t } = useTranslation();
@@ -40,7 +41,7 @@ export function LoginPage() {
 
         <div className="flex flex-col gap-2">
           <Label htmlFor="password">{t('login.password')}</Label>
-          <Input
+          <PasswordInput
             id="password"
             type="password"
             value={password}
