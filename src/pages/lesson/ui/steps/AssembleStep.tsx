@@ -8,6 +8,12 @@ import {
   type LessonStep,
 } from '@/entities/content';
 import { localize } from '@/shared/lib/localize';
+import { useVoiceStore } from '@/features/voice';
+import { Button } from '@/components/ui/button';
+import { Headphones } from 'lucide-react';
+import { CopyButton } from '@/shared/ui/CopyButton';
+import { playAudio } from '@/shared/lib/audio/play';
+import { audioUrl } from '@/shared/lib/audio/url';
 
 type AssembleStepDef = Extract<LessonStep, { kind: 'assemble' }>;
 
@@ -26,6 +32,8 @@ export function AssembleStep({ bundle, step, solved, onSolvedChange }: AssembleS
   const [placed, setPlaced] = useState<number[]>(() =>
     solved ? Array.from({ length: tokenCount }, (_, i) => i) : [],
   );
+  const voice = useVoiceStore((s) => s.voice);
+  const japanese = tokens.map((t) => t.token.surface).join('');
 
   const isSolved = (order: number[]) =>
     order.length === tokenCount && order.every((v, idx) => v === idx);
@@ -52,17 +60,35 @@ export function AssembleStep({ bundle, step, solved, onSolvedChange }: AssembleS
       </p>
       <p className="text-base text-heading">{localize(sentence.translation)}</p>
 
-      <div className="flex min-h-16 flex-wrap items-start gap-2 rounded-xl border-2 border-dashed p-2">
-        {placed.map((tokenIdx) => (
-          <button
-            key={tokenIdx}
-            type="button"
-            className="flex flex-col items-center rounded-lg border px-2 py-1 text-lg cursor-pointer hover:bg-muted"
-            onClick={() => remove(tokenIdx)}
-          >
-            <TokenView token={tokens[tokenIdx].token} />
-          </button>
-        ))}
+      <div className="flex min-h-16 flex-col gap-2 rounded-lg border-2 border-dashed px-3.5 py-3">
+        <div className="flex flex-wrap items-start gap-2 ">
+          {placed.map((tokenIdx) => (
+            <button
+              key={tokenIdx}
+              type="button"
+              className="flex flex-col items-center rounded-lg border px-2 py-1 text-lg cursor-pointer hover:bg-muted"
+              onClick={() => remove(tokenIdx)}
+            >
+              <TokenView token={tokens[tokenIdx].token} />
+            </button>
+          ))}
+        </div>
+
+        {isCorrect && (
+          <div className="flex items-center gap-1 border-t pt-2 mt-1">
+            <Button
+              type="button"
+              variant="ghost"
+              size="default"
+              className="text-muted-foreground transition-colors hover:text-foreground cursor-pointer"
+              onClick={() => playAudio(audioUrl('sentences', step.sentenceId, voice))}
+            >
+              <Headphones />
+            </Button>
+
+            <CopyButton text={japanese} />
+          </div>
+        )}
       </div>
 
       <div className="flex flex-wrap gap-2">
