@@ -1,5 +1,4 @@
-import { AudioLinesIcon } from 'lucide-react';
-import { useTranslation } from 'react-i18next';
+import { Headphones } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import type { ResolvedToken } from '@/entities/content';
 import { TokenRow } from '@/entities/content/ui/TokenRow';
@@ -15,7 +14,6 @@ interface SentenceFavouriteItemProps {
 }
 
 export function SentenceFavouriteItem({ sentence, onOpenToken }: SentenceFavouriteItemProps) {
-  const { t } = useTranslation();
   const { isFavourite, toggle, isPending } = useSentenceFavourite(sentence.id);
 
   const resolved: ResolvedToken[] = sentence.tokens.map((st) => ({
@@ -25,7 +23,7 @@ export function SentenceFavouriteItem({ sentence, onOpenToken }: SentenceFavouri
   const japanese = sentence.tokens.map((st) => st.token.surface).join('');
 
   return (
-    <li className="flex flex-col gap-2 rounded-lg border px-3 py-2">
+    <li className="flex flex-col gap-2 rounded-lg border px-3.5 py-3">
       <div className="flex items-start justify-between gap-2">
         <div className="flex flex-col gap-1">
           <TokenRow tokens={resolved} onTokenClick={(r) => onOpenToken(r.token.id)} />
@@ -39,10 +37,10 @@ export function SentenceFavouriteItem({ sentence, onOpenToken }: SentenceFavouri
         <Button
           type="button"
           variant="ghost"
-          size="sm"
+          size="default"
           className="text-muted-foreground transition-colors hover:text-foreground cursor-pointer"
         >
-          <AudioLinesIcon /> {t('common.listen')}
+          <Headphones />
         </Button>
 
         <CopyButton text={japanese} />

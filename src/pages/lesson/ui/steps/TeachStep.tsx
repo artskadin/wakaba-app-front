@@ -22,7 +22,6 @@ export function TeachStep({ bundle, step, onTokenClick }: TeachStepProps) {
   const { t } = useTranslation();
   const siblings = step.siblingSentenceIds ?? [step.sentenceId];
   const [activeSentenceId, setActiveSentenceId] = useState(step.sentenceId);
-  const activeSentence = bundle.sentences[activeSentenceId];
   const pattern = step.patternId ? bundle.patterns[step.patternId] : undefined;
   const sentence = bundle.sentences[step.sentenceId];
 
@@ -32,17 +31,12 @@ export function TeachStep({ bundle, step, onTokenClick }: TeachStepProps) {
         {t('lesson.mainPhrase')}
       </p>
 
-      <div className="rounded-lg border p-3">
-        <SentenceCard
-          bundle={bundle}
-          sentenceId={activeSentenceId}
-          highlightSlot={true}
-          onTokenClick={onTokenClick}
-        />
-        <p className="mt-3 text-base font-normal text-heading">
-          {localize(activeSentence.translation)}
-        </p>
-      </div>
+      <SentenceCard
+        bundle={bundle}
+        sentenceId={activeSentenceId}
+        highlightSlot={true}
+        onTokenClick={onTokenClick}
+      />
 
       {pattern && (
         <div className="flex flex-col gap-2 rounded-lg border border-dashed p-3 text-sm">

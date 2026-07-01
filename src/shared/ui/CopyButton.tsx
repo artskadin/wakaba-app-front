@@ -1,7 +1,7 @@
 import { useTranslation } from 'react-i18next';
 import { useCopy } from '../lib/useCopy';
 import { Button } from '@/components/ui/button';
-import { Check, Copy } from 'lucide-react';
+import { Check, Copy, Languages } from 'lucide-react';
 
 export function CopyButton({ text }: { text: string }) {
   const { t } = useTranslation();
@@ -11,20 +11,13 @@ export function CopyButton({ text }: { text: string }) {
     <Button
       type="button"
       variant="ghost"
-      size="sm"
+      size="default"
       onClick={() => copy(text)}
       aria-label={copied ? t('common.copied') : t('common.copy')}
       className="text-muted-foreground transition-colors hover:text-foreground cursor-pointer"
     >
-      {copied ? (
-        <>
-          <Check className="text-primary" /> {t('common.copied')}
-        </>
-      ) : (
-        <>
-          <Copy /> {t('common.hieroglyphs')}
-        </>
-      )}
+      {copied ? <Check className="text-primary" /> : <Copy />}
+      <Languages size="16" />
     </Button>
   );
 }

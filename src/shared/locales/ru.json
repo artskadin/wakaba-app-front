@@ -33,13 +33,15 @@
     "substitute": "Подставь",
     "back": "Назад",
     "next": "Далее",
-    "finish": "Готово",
+    "finish": "Завершить урок",
     "loading": "Загрузка…",
-    "exit": "Выйти",
-    "exitTitle": "Выйти из урока?",
-    "exitDescription": "Прогресс урока не сохранится",
-    "exitCancel": "Остаться",
-    "exitConfirm": "Выйти",
+    "exitBlock": {
+      "exit": "Выйти",
+      "title": "Выйти из урока?",
+      "description": "Прогресс урока не сохранится",
+      "cancel": "Остаться",
+      "confirm": "Выйти"
+    },
     "stepComingSoon": "Шаг «{{kind}}» — скоро",
     "assemble": {
       "title": "Собери фразу",
@@ -49,6 +51,7 @@
     },
     "speak": {
       "title": "Произнеси",
+      "hint": "Подсказка",
       "record": "🎤 Записать голос",
       "recording": "● Идёт запись… (стоп)",
       "recorded": "Записано (демо)",
@@ -58,8 +61,15 @@
       "title": "Диалог",
       "you": "Ты",
       "staff": "Собеседник",
-      "yourLine": "Скажи: «{{translation}}»",
+      "yourLine": "Скажи:",
       "hint": "Подсказка"
+    },
+    "finishBlock": {
+      "title": "Успех!",
+      "description": "Ты успешно закончил урок.",
+      "sentencesCount": "Количество изученных предложений",
+      "stay": "Остаться",
+      "exit": "Выйти"
     }
   },
   "nav": { "home": "Главная", "tracks": "Треки", "favourites": "Избранное", "profile": "Профиль" },

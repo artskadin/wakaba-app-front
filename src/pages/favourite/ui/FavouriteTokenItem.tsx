@@ -1,9 +1,8 @@
-import { AudioLinesIcon } from 'lucide-react';
-import { useTranslation } from 'react-i18next';
+import { Headphones } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import type { ResolvedToken, Token } from '@/entities/content';
 import { TokenRow } from '@/entities/content/ui/TokenRow';
-import { useTokenFavourite } from '@/features/favourites/model/useFavourites';
+import { useTokenFavourite } from '@/features/favourites';
 import { localize } from '@/shared/lib/localize';
 import { CopyButton } from '@/shared/ui/CopyButton';
 import { FavouriteButton } from '@/shared/ui/FavouriteButton';
@@ -14,14 +13,13 @@ interface FavouriteTokenItemProps {
 }
 
 export function FavouriteTokenItem({ token, onOpenToken }: FavouriteTokenItemProps) {
-  const { t } = useTranslation();
   const { isFavourite, toggle, isPending } = useTokenFavourite(token.id);
   const resolved: ResolvedToken[] = [{ token, ref: { tokenId: token.id } }];
 
   return (
-    <li className="flex flex-col gap-2 rounded-lg border px-3 py-2">
+    <li className="flex flex-col gap-2 rounded-lg border px-3.5 py-3">
       <div className="flex items-start justify-between gap-2">
-        <div className="flex flex-col gap-1">
+        <div className="flex flex-col gap-2">
           <TokenRow tokens={resolved} onTokenClick={(r) => onOpenToken(r.token.id)} />
           <span className="text-sm text-heading">{localize(token.gloss)}</span>
         </div>
@@ -32,12 +30,11 @@ export function FavouriteTokenItem({ token, onOpenToken }: FavouriteTokenItemPro
         <Button
           type="button"
           variant="ghost"
-          size="sm"
+          size="default"
           className="cursor-pointer text-muted-foreground transition-colors hover:text-foreground"
           // onClick — на шаге звука
         >
-          <AudioLinesIcon />
-          {t('common.listen')}
+          <Headphones />
         </Button>
         <CopyButton text={token.surface} />
       </div>

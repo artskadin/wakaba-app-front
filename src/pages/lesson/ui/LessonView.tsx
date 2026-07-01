@@ -52,6 +52,8 @@ export function LessonView({
   const [selectedToken, setSelectedToken] = useState<ResolvedToken | null>(null);
   const [solvedSteps, setSolvedSteps] = useState<Set<number>>(new Set());
 
+  const [showFinish, setShowFinish] = useState(false);
+
   const selectedNote = selectedToken?.token.grammarNoteId
     ? (bundle?.grammarNotes[selectedToken.token.grammarNoteId] ?? null)
     : null;
@@ -62,10 +64,12 @@ export function LessonView({
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ['progress'] }),
   });
 
+  const sentencesCount = Object.values(bundle.sentences).length;
   const steps = bundle.lesson.steps;
   const step = steps[stepIdx];
   const isLastStep = stepIdx === steps.length - 1;
-  const requiresCompletion = step.kind === 'assemble';
+  const requiresCompletion =
+    step.kind === 'assemble' || step.kind === 'speak' || step.kind === 'dialog';
   const canAdvance = !requiresCompletion || solvedSteps.has(stepIdx);
 
   function handleStepSolvedChange(solved: boolean) {
@@ -94,7 +98,10 @@ export function LessonView({
       goToStep(stepIdx + 1);
       return;
     }
+    setShowFinish(true);
+  }
 
+  function confirmFinish() {
     saveProgress.mutate({ currentStep: stepIdx, status: 'completed' }, { onSuccess: onFinish });
   }
 
@@ -110,7 +117,7 @@ export function LessonView({
             type="button"
             size="icon"
             variant="outline"
-            aria-label={t('lesson.exit')}
+            aria-label={t('lesson.exitBlock.exit')}
             className="cursor-pointer"
           >
             <ArrowLeft />
@@ -118,15 +125,41 @@ export function LessonView({
         </AlertDialogTrigger>
         <AlertDialogContent className="rounded-lg">
           <AlertDialogHeader>
-            <AlertDialogTitle>{t('lesson.exitTitle')}</AlertDialogTitle>
-            <AlertDialogDescription>{t('lesson.exitDescription')}</AlertDialogDescription>
+            <AlertDialogTitle>{t('lesson.exitBlock.title')}</AlertDialogTitle>
+            <AlertDialogDescription>{t('lesson.exitBlock.description')}</AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel className="cursor-pointer">
-              {t('lesson.exitCancel')}
+              {t('lesson.exitBlock.cancel')}
             </AlertDialogCancel>
             <AlertDialogAction className="cursor-pointer" onClick={onExit}>
-              {t('lesson.exitConfirm')}
+              {t('lesson.exitBlock.confirm')}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+
+      <AlertDialog open={showFinish} onOpenChange={setShowFinish}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>{t('lesson.finishBlock.title')}</AlertDialogTitle>
+            <AlertDialogDescription>{t('lesson.finishBlock.description')}</AlertDialogDescription>
+          </AlertDialogHeader>
+
+          {/* место под полезную статистику — пока то, что реально есть */}
+          <div className="flex flex-col gap-2">
+            <div className="flex items-start justify-between gap-2">
+              <span className="max-w-[80%] text-sm text-muted-foreground">
+                {t('lesson.finishBlock.sentencesCount')}
+              </span>
+              <span className="text-sm text-primary">{sentencesCount}</span>
+            </div>
+          </div>
+
+          <AlertDialogFooter>
+            <AlertDialogCancel>{t('lesson.finishBlock.stay')}</AlertDialogCancel>
+            <AlertDialogAction onClick={confirmFinish} disabled={saveProgress.isPending}>
+              {t('lesson.finishBlock.exit')}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>

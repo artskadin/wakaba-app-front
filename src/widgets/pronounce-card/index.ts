@@ -1,0 +1,1 @@
+export { PronounceCard } from './PronounceCard';

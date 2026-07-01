@@ -35,9 +35,25 @@ export function StepView({
         />
       );
     case 'speak':
-      return <SpeakStep bundle={bundle} step={step} onTokenClick={onTokenClick} />;
+      return (
+        <SpeakStep
+          bundle={bundle}
+          step={step}
+          solved={solved}
+          onSolvedChange={onStepSolvedChange}
+          onTokenClick={onTokenClick}
+        />
+      );
     case 'dialog':
-      return <DialogStep bundle={bundle} step={step} onTokenClick={onTokenClick} />;
+      return (
+        <DialogStep
+          bundle={bundle}
+          step={step}
+          solved={solved}
+          onSolvedChange={onStepSolvedChange}
+          onTokenClick={onTokenClick}
+        />
+      );
     default:
       return (
         <div className="rounded-xl border p-6 text-muted-foreground">

@@ -19,6 +19,7 @@
       { "kind": "teach", "sentenceId": "cant_jp" },
       { "kind": "teach", "sentenceId": "little_jp" },
       { "kind": "assemble", "sentenceId": "q_eigo" },
+      { "kind": "speak", "sentenceId": "q_eigo" },
       { "kind": "assemble", "sentenceId": "cant_jp" },
       { "kind": "assemble", "sentenceId": "little_jp" },
       { "kind": "dialog", "dialogId": "language_help" }

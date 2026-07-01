@@ -1,5 +1,6 @@
 import { resolveSentence, type LessonBundle, type ResolvedToken } from '@/entities/content';
 import { TokenRow } from './TokenRow';
+import { localize } from '@/shared/lib/localize';
 
 interface SentenceViewProps {
   bundle: LessonBundle;
@@ -15,6 +16,12 @@ export function SentenceView({
   onTokenClick,
 }: SentenceViewProps) {
   const { tokens } = resolveSentence(bundle, sentenceId);
+  const { translation } = bundle.sentences[sentenceId];
 
-  return <TokenRow tokens={tokens} highlightSlot={highlightSlot} onTokenClick={onTokenClick} />;
+  return (
+    <div className="flex flex-col gap-2">
+      <TokenRow tokens={tokens} highlightSlot={highlightSlot} onTokenClick={onTokenClick} />
+      <span className="text-base text-heading">{localize(translation)}</span>
+    </div>
+  );
 }

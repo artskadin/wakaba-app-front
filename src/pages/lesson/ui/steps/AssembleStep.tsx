@@ -47,12 +47,10 @@ export function AssembleStep({ bundle, step, solved, onSolvedChange }: AssembleS
 
   return (
     <div className="flex flex-col gap-4">
-      <p className="text-xs uppercase tracking-wide text-muted-foreground">
+      <p className="text-sm uppercase tracking-wide text-muted-foreground">
         {t('lesson.assemble.title')}
       </p>
-      <p className="text-sm">
-        {t('lesson.assemble.prompt', { translation: localize(sentence.translation) })}
-      </p>
+      <p className="text-base text-heading">{localize(sentence.translation)}</p>
 
       <div className="flex min-h-16 flex-wrap items-start gap-2 rounded-xl border-2 border-dashed p-2">
         {placed.map((tokenIdx) => (

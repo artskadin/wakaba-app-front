@@ -1,70 +1,103 @@
-import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { type LessonBundle, type LessonStep, type ResolvedToken } from '@/entities/content';
-import { localize } from '@/shared/lib/localize';
 import { SentenceCard } from '@/widgets/sentence-card';
+import { AudioLockProvider } from '@/shared/lib/audio/AudioLockProvider';
+import { PronounceCard } from '@/widgets/pronounce-card';
+import { useState } from 'react';
 
 type DialogStepDef = Extract<LessonStep, { kind: 'dialog' }>;
 
 interface DialogStepProps {
   bundle: LessonBundle;
   step: DialogStepDef;
+  solved: boolean;
+  onSolvedChange: (solved: boolean) => void;
   onTokenClick: (resolvedToken: ResolvedToken) => void;
 }
 
-export function DialogStep({ bundle, step, onTokenClick }: DialogStepProps) {
+export function DialogStep({
+  bundle,
+  step,
+  solved,
+  onSolvedChange,
+  onTokenClick,
+}: DialogStepProps) {
   const { t } = useTranslation();
-  const dialog = bundle.dialogs[step.dialogId];
-  const [revealed, setRevealed] = useState<Record<number, boolean>>({});
+  const { turns } = bundle.dialogs[step.dialogId];
+
+  const userTurnIdx = turns.flatMap((tn, i) => (tn.speaker === 'user' ? [i] : []));
+
+  const [recorded, setRecorded] = useState<Set<number>>(() =>
+    solved ? new Set(userTurnIdx) : new Set(),
+  );
+
+  const isVisible = (i: number) =>
+    turns.slice(0, i).every((tn, j) => tn.speaker !== 'user' || recorded.has(j));
+
+  function markRecorded(idx: number) {
+    setRecorded((prev) => {
+      if (prev.has(idx)) {
+        return prev;
+      }
+
+      const next = new Set(prev);
+      next.add(idx);
+
+      if (next.size === userTurnIdx.length) {
+        onSolvedChange(true);
+      }
+
+      return next;
+    });
+  }
 
   return (
-    <div className="flex flex-col gap-3">
-      <p className="text-xs uppercase tracking-wide text-muted-foreground">
-        {t('lesson.dialog.title')}
-      </p>
+    <AudioLockProvider>
+      <div className="flex flex-col gap-4">
+        <p className="text-sm uppercase tracking-wide text-muted-foreground">
+          {t('lesson.dialog.title')}
+        </p>
 
-      {dialog.turns.map((turn, idx) => {
-        const sentence = bundle.sentences[turn.sentenceId];
-        const isUser = turn.speaker === 'user';
+        {turns.map((turn, idx) => {
+          if (!isVisible(idx)) {
+            return null;
+          }
 
-        return (
-          <div key={idx} className={`flex ${isUser ? 'justify-end' : 'justify-start'}`}>
+          const isUser = turn.speaker === 'user';
+
+          return (
             <div
-              className={`max-w-[85%] rounded-2xl border p-3 ${isUser ? 'bg-primary/5' : 'bg-muted'}`}
+              key={idx}
+              className={`animate-turn-in flex ${isUser ? 'justify-end' : 'justify-start'}`}
             >
-              <p className="mb-1 text-sm text-muted-foreground">
-                {isUser ? t('lesson.dialog.you') : t('lesson.dialog.staff')}
-              </p>
+              <div className="max-w-[90%] rounded-lg border px-3.5 py-3">
+                <p className="mb-2 text-sm tracking-wide text-accent-foreground">
+                  {isUser ? t('lesson.dialog.you') : t('lesson.dialog.staff')}
+                </p>
 
-              {isUser && !revealed[idx] ? (
-                <div className="flex flex-col gap-2">
-                  <p className="text-sm text-muted-foreground">
-                    {t('lesson.dialog.yourLine', { translation: localize(sentence.translation) })}
-                  </p>
-                  <button
-                    type="button"
-                    className="self-start rounded-lg border px-2 py-1 text-xs"
-                    onClick={() => setRevealed((prev) => ({ ...prev, [idx]: true }))}
-                  >
-                    {t('lesson.dialog.hint')}
-                  </button>
-                </div>
-              ) : (
-                <>
+                {isUser ? (
+                  <PronounceCard
+                    bundle={bundle}
+                    sentenceId={turn.sentenceId}
+                    bordered={false}
+                    lockKey={`turn-${idx}`}
+                    onRecorded={() => markRecorded(idx)}
+                    onTokenClick={onTokenClick}
+                  />
+                ) : (
                   <SentenceCard
                     bundle={bundle}
                     sentenceId={turn.sentenceId}
+                    bordered={false}
+                    lockKey={`turn-${idx}`}
                     onTokenClick={onTokenClick}
                   />
-                  <p className="mt-1 text-xs text-muted-foreground">
-                    {localize(sentence.translation)}
-                  </p>
-                </>
-              )}
+                )}
+              </div>
             </div>
-          </div>
-        );
-      })}
-    </div>
+          );
+        })}
+      </div>
+    </AudioLockProvider>
   );
 }

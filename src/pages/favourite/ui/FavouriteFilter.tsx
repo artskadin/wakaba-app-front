@@ -28,7 +28,7 @@ export function FavouriteFilter({ value, counts, onChange }: FavouriteFilterProp
       onValueChange={(v) => v && onChange(v as FavFilter)}
     >
       {OPTIONS.map((o) => (
-        <ToggleGroupItem key={o.value} value={o.value}>
+        <ToggleGroupItem key={o.value} value={o.value} className="cursor-pointer">
           <span>{t(o.key)}</span>
           <span className="text-accent-foreground">{counts[o.value]}</span>
         </ToggleGroupItem>
