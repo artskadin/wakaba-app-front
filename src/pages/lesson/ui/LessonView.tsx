@@ -7,10 +7,9 @@ import { Button } from '@/components/ui/button';
 import { useRepos } from '@/shared/api/repos';
 import { StepView } from './StepView';
 import { TokenDetailDrawer } from '@/widgets/token-detail';
-import { VoiceToggle } from '@/shared/ui/VoiceToggle';
+import { ThemeToggle, VoiceToggle } from '@/shared/ui';
 import type { Theme, Voice } from '@/entities/settings';
 import { useVoiceStore } from '@/features/voice';
-import { ThemeToggle } from '@/shared/ui/ThemeToggle';
 import {
   AlertDialog,
   AlertDialogAction,

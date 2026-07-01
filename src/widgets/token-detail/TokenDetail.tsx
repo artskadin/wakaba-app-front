@@ -1,8 +1,7 @@
 import { GrammarNoteView, type GrammarNote, type Token } from '@/entities/content';
 import { localize } from '@/shared/lib/localize';
 import { useTokenFavourite } from '@/features/favourites';
-import { FavouriteButton } from '@/shared/ui/FavouriteButton';
-import { CopyButton } from '@/shared/ui/CopyButton';
+import { CopyButton, FavouriteButton } from '@/shared/ui';
 
 interface TokenDetailProps {
   token: Token;

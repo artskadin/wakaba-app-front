@@ -5,6 +5,7 @@ import { useRegister } from '@/features/auth';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
+import { PasswordInput } from '@/shared/ui';
 
 export function RegisterPage() {
   const { t } = useTranslation();
@@ -15,11 +16,28 @@ export function RegisterPage() {
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [confirm, setConfirm] = useState('');
+  const [mismatch, setMismatch] = useState(false);
 
   function handleSubmit(e: SubmitEvent<HTMLFormElement>) {
-    console.log('RegisterPage');
     e.preventDefault();
+
+    if (password !== confirm) {
+      setMismatch(true);
+      return;
+    }
+
     register.mutate({ firstName, lastName, email, password }, { onSuccess: () => navigate('/') });
+  }
+
+  function onPassword(v: string) {
+    setPassword(v);
+    if (mismatch) setMismatch(false);
+  }
+
+  function onConfirm(v: string) {
+    setConfirm(v);
+    if (mismatch) setMismatch(false);
   }
 
   return (
@@ -57,29 +75,41 @@ export function RegisterPage() {
 
         <div className="flex flex-col gap-2">
           <Label htmlFor="password">{t('auth.password')}</Label>
-          <Input
+          <PasswordInput
             id="password"
-            type="password"
             minLength={8}
             value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            onChange={(e) => onPassword(e.target.value)}
             required
           />
         </div>
 
+        <div className="flex flex-col gap-2">
+          <Label htmlFor="confirm">{t('auth.confirmPassword')}</Label>
+          <PasswordInput
+            id="confirm"
+            minLength={8}
+            value={confirm}
+            onChange={(e) => onConfirm(e.target.value)}
+            required
+            aria-invalid={mismatch}
+          />
+          {mismatch && <p className="text-sm text-destructive">{t('auth.passwordMismatch')}</p>}
+        </div>
+
         {register.isError && <p className="text-sm text-destructive">{t('auth.registerError')}</p>}
+
+        <p className="mt-4 text-sm text-muted-foreground">
+          {t('auth.haveAccount')}{' '}
+          <Link to="/login" className="text-primary hover:underline">
+            {t('auth.toLogin')}
+          </Link>
+        </p>
 
         <Button type="submit" disabled={register.isPending} className="mt-2 cursor-pointer">
           {register.isPending ? t('auth.registerPending') : t('auth.registerSubmit')}
         </Button>
       </form>
-
-      <p className="mt-4 text-sm text-muted-foreground">
-        {t('auth.haveAccount')}{' '}
-        <Link to="/login" className="text-primary hover:underline">
-          {t('auth.toLogin')}
-        </Link>
-      </p>
     </div>
   );
 }

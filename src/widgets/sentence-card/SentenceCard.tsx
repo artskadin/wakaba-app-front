@@ -7,8 +7,7 @@ import {
   type ResolvedToken,
 } from '@/entities/content';
 import { useSentenceFavourite } from '@/features/favourites';
-import { CopyButton } from '@/shared/ui/CopyButton';
-import { FavouriteButton } from '@/shared/ui/FavouriteButton';
+import { CopyButton, FavouriteButton } from '@/shared/ui';
 import { usePronounce } from '@/shared/lib/audio/usePronounce';
 import { useAudioLockReporter } from '@/shared/lib/audio/useAudioLockReporter';
 import { audioUrl } from '@/shared/lib/audio/url';

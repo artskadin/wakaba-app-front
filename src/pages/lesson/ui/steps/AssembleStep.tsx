@@ -11,7 +11,7 @@ import { localize } from '@/shared/lib/localize';
 import { useVoiceStore } from '@/features/voice';
 import { Button } from '@/components/ui/button';
 import { Headphones } from 'lucide-react';
-import { CopyButton } from '@/shared/ui/CopyButton';
+import { CopyButton } from '@/shared/ui';
 import { playAudio } from '@/shared/lib/audio/play';
 import { audioUrl } from '@/shared/lib/audio/url';
 

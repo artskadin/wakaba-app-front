@@ -4,7 +4,7 @@ import { favouriteRepo } from '@/shared/api/favouriteRepo';
 import { useQuery } from '@tanstack/react-query';
 import { contentRepo } from '@/shared/api/contentRepo';
 import { TokenDetailDrawer } from '@/widgets/token-detail';
-import { PageHeader } from '@/shared/ui/PageHeader';
+import { PageHeader } from '@/shared/ui';
 import { SentenceFavouriteItem } from './SentenceFavouriteItem';
 import { FavouriteTokenItem } from './FavouriteTokenItem';
 import { usePersistanceState } from '@/shared/lib/usePersistenceState';

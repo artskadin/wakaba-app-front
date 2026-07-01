@@ -7,10 +7,8 @@ import type { UserSettings, Voice } from '@/entities/settings';
 import { settingsRepo } from '@/shared/api/settingsRepo';
 import { playAudio } from '@/shared/lib/audio/play';
 import { audioUrl } from '@/shared/lib/audio/url';
-import { VoiceToggle } from '@/shared/ui/VoiceToggle';
-import { ThemeToggle } from '@/shared/ui/ThemeToggle';
+import { PageHeader, ThemeToggle, VoiceToggle } from '@/shared/ui';
 import { useThemeSetting } from '@/features/theme/useThemeSetting';
-import { PageHeader } from '@/shared/ui/PageHeader';
 
 function Row({ label, value }: { label: string; value?: string | null }) {
   const { t } = useTranslation();
@@ -86,9 +84,6 @@ export function ProfilePage() {
       <PageHeader>
         <div className="flex items-center justify-between">
           <h1 className="text-lg font-semibold text-heading">{t('nav.profile')}</h1>
-          {/*<Button variant="outline" onClick={() => setUser(null)}>
-            {t('tracks.logout')}
-          </Button>*/}
           <ThemeToggle value={theme} onChange={setTheme} />
         </div>
       </PageHeader>

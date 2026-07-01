@@ -5,8 +5,7 @@ import { TokenRow } from '@/entities/content/ui/TokenRow';
 import type { FavouriteSentence } from '@/entities/favourites';
 import { useSentenceFavourite } from '@/features/favourites';
 import { localize } from '@/shared/lib/localize';
-import { CopyButton } from '@/shared/ui/CopyButton';
-import { FavouriteButton } from '@/shared/ui/FavouriteButton';
+import { CopyButton, FavouriteButton } from '@/shared/ui';
 
 interface SentenceFavouriteItemProps {
   sentence: FavouriteSentence;

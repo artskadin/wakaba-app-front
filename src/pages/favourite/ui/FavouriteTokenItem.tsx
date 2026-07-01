@@ -4,8 +4,7 @@ import type { ResolvedToken, Token } from '@/entities/content';
 import { TokenRow } from '@/entities/content/ui/TokenRow';
 import { useTokenFavourite } from '@/features/favourites';
 import { localize } from '@/shared/lib/localize';
-import { CopyButton } from '@/shared/ui/CopyButton';
-import { FavouriteButton } from '@/shared/ui/FavouriteButton';
+import { CopyButton, FavouriteButton } from '@/shared/ui';
 
 interface FavouriteTokenItemProps {
   token: Token;

@@ -14,7 +14,9 @@
     "errorTitle": "Что-то пошло не так",
     "errorDescription": "Попробуйте перезагрузить страницу",
     "reloads": "Перезагрузить",
-    "loading": "Загрузка…"
+    "loading": "Загрузка…",
+    "hidePassword": "Скрыть пароль",
+    "showPassword": "Показать пароль"
   },
   "track": {
     "title": "Трек",
@@ -104,6 +106,8 @@
     "registerTitle": "Регистрация",
     "email": "Почта",
     "password": "Пароль",
+    "confirmPassword": "Повторите пароль",
+    "passwordMismatch": "Пароли не совпадают",
     "registerSubmit": "Зарегистрироваться",
     "registering": "Регистрируем…",
     "registerError": "Не удалось зарегистрироваться. Возможно, почта уже занята.",

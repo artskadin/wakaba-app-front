@@ -4,7 +4,7 @@ import { useQuery } from '@tanstack/react-query';
 import { contentRepo } from '@/shared/api/contentRepo';
 import { localize } from '@/shared/lib/localize';
 import { progressRepo } from '@/shared/api/progressRepo';
-import { PageHeader } from '@/shared/ui/PageHeader';
+import { PageHeader } from '@/shared/ui';
 
 export function TracksPage() {
   const { t } = useTranslation();
