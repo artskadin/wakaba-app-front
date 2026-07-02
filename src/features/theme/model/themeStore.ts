@@ -7,8 +7,12 @@ interface ThemeStore {
   setTheme: (t: 'light' | 'dark') => void;
 }
 
+function getStoredTheme(): Theme {
+  return localStorage.getItem('theme') === 'dark' ? 'dark' : 'light';
+}
+
 export const useThemeStore = create<ThemeStore>((set) => ({
-  theme: 'light',
+  theme: getStoredTheme(),
   setTheme: (theme) => {
     applyTheme(theme);
     set({ theme });
