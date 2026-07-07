@@ -14,11 +14,16 @@ export function TokenRow({ tokens, highlightSlot, onTokenClick }: TokenRowProps)
         const isSlot = highlightSlot && !!resolved.ref.slotType;
 
         return (
-          <button
-            key={i}
-            type="button"
-            onClick={() => onTokenClick?.(resolved)}
-            className={`
+          <span className="flex items-start">
+            {resolved.ref.before && (
+              <span className="py-1 text-lg leading-tight">{resolved.ref.before}</span>
+            )}
+
+            <button
+              key={i}
+              type="button"
+              onClick={() => onTokenClick?.(resolved)}
+              className={`
               flex
               flex-col
               items-center
@@ -29,9 +34,14 @@ export function TokenRow({ tokens, highlightSlot, onTokenClick }: TokenRowProps)
               cursor-pointer
               hover:bg-muted
               ${isSlot ? 'bg-primary/10' : ''}`}
-          >
-            <TokenView token={resolved.token} isSlot={isSlot} />
-          </button>
+            >
+              <TokenView token={resolved.token} isSlot={isSlot} />
+            </button>
+
+            {resolved.ref.after && (
+              <span className="py-1 text-lg leading-tight">{resolved.ref.after}</span>
+            )}
+          </span>
         );
       })}
     </div>

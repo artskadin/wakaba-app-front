@@ -14,6 +14,7 @@ import { audioUrl } from '@/shared/lib/audio/url';
 import { useVoiceStore } from '@/features/voice';
 import { toast } from 'sonner';
 import { useTranslation } from 'react-i18next';
+import { buildJpSentence } from '@/entities/content/lib/buildJpSentence';
 
 interface SentenceCardProps {
   bundle: LessonBundle;
@@ -35,7 +36,7 @@ export function SentenceCard({
   const { t } = useTranslation();
   const { isFavourite, toggle, isPending } = useSentenceFavourite(sentenceId);
   const { tokens } = resolveSentence(bundle, sentenceId);
-  const japanese = tokens.map((item) => item.token.surface).join('');
+  const japanese = buildJpSentence(tokens);
 
   const voice = useVoiceStore((s) => s.voice);
   const player = usePronounce({ onError: () => toast.error(t('common.playbackFailed')) });

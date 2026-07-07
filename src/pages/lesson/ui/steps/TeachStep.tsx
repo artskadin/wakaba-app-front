@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { InfoIcon } from 'lucide-react';
 import {
   GrammarNoteView,
   type LessonBundle,
@@ -9,6 +10,12 @@ import {
 import { localize } from '@/shared/lib/localize';
 import { SentenceCard } from '@/widgets/sentence-card';
 import { Button } from '@/components/ui/button';
+import {
+  Popover,
+  PopoverContent,
+  PopoverDescription,
+  PopoverTrigger,
+} from '@/components/ui/popover';
 
 type TeachStepDef = Extract<LessonStep, { kind: 'teach' }>;
 
@@ -40,16 +47,29 @@ export function TeachStep({ bundle, step, onTokenClick }: TeachStepProps) {
 
       {pattern && (
         <div className="flex flex-col gap-2 rounded-lg border border-dashed p-3 text-sm">
-          <p className="tracking-wide text-muted-foreground">{t('lesson.pattern')}</p>
+          <div className="flex items-center gap-1">
+            <p className="tracking-wide text-muted-foreground">{t('lesson.pattern.title')}</p>
+
+            <Popover>
+              <PopoverTrigger asChild>
+                <Button
+                  type="button"
+                  aria-label={t('lesson.pattern.infoLabel')}
+                  variant="ghost"
+                  className="cursor-pointer"
+                >
+                  <InfoIcon />
+                </Button>
+              </PopoverTrigger>
+
+              <PopoverContent align="start" className="max-w-xs text-sm">
+                <PopoverDescription>{t('lesson.pattern.info')}</PopoverDescription>
+              </PopoverContent>
+            </Popover>
+          </div>
           <p>{localize(pattern.explanation)}</p>
         </div>
       )}
-
-      {sentence.grammarNoteIds?.map((id) => {
-        const note = bundle.grammarNotes[id];
-
-        return note ? <GrammarNoteView key={id} note={note} /> : null;
-      })}
 
       {siblings.length > 1 && (
         <div>
@@ -89,6 +109,18 @@ export function TeachStep({ bundle, step, onTokenClick }: TeachStepProps) {
           </div>
         </div>
       )}
+
+      {pattern?.grammarNoteIds.map((id) => {
+        const note = bundle.grammarNotes[id];
+
+        return note ? <GrammarNoteView key={id} note={note} /> : null;
+      })}
+
+      {sentence.grammarNoteIds?.map((id) => {
+        const note = bundle.grammarNotes[id];
+
+        return note ? <GrammarNoteView key={id} note={note} /> : null;
+      })}
     </div>
   );
 }

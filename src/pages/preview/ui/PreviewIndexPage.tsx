@@ -13,11 +13,17 @@ export function PreviewIndexPage() {
       {lessons.length === 0 ? (
         <p className="text-sm text-muted-foreground">{t('preview.empty')}</p>
       ) : (
-        <ul className="space-y-1">
-          {lessons.map((l) => (
-            <li key={l.id}>
-              <Link to={`/preview/lessons/${l.id}`} className="text-primary hover:underline">
-                {localize(l.title)}
+        <ul className="mt-2 flex flex-col gap-3">
+          {lessons.map((lesson) => (
+            <li key={lesson.id}>
+              <Link
+                to={`/preview/lessons/${lesson.id}`}
+                className="flex items-center justify-between text-sm rounded-lg border p-3.5 transition hover:bg-accent"
+              >
+                <div className="flex flex-col gap-1 max-w-[90%]">
+                  <span className="font-medium">{localize(lesson.title)}</span>
+                  <span className="text-muted-foreground">{localize(lesson.context)}</span>
+                </div>
               </Link>
             </li>
           ))}

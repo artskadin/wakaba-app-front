@@ -40,7 +40,7 @@ export function TracksPage() {
             <li key={track.id}>
               <Link
                 to={`/tracks/${track.id}`}
-                className="flex flex-col gap-1 text-sm rounded-lg border p-3 transition hover:bg-accent"
+                className="flex flex-col gap-1 text-sm rounded-lg border p-3.5 transition hover:bg-accent"
               >
                 <div className="font-medium">{localize(track.title)}</div>
                 <div className="text-sm text-muted-foreground">{localize(track.description)}</div>

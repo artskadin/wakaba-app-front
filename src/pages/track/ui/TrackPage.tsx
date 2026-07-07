@@ -70,9 +70,13 @@ export function TrackPage() {
           <li key={lesson.id}>
             <Link
               to={`/lesson/${lesson.id}`}
-              className="flex items-center justify-between text-sm rounded-lg border p-4 transition hover:bg-accent"
+              className="flex items-center justify-between text-sm rounded-lg border p-3.5 transition hover:bg-accent"
             >
-              <span className="font-medium">{localize(lesson.title)}</span>
+              <div className="flex flex-col gap-1 max-w-[90%]">
+                <span className="font-medium">{localize(lesson.title)}</span>
+                <span className="text-muted-foreground">{localize(lesson.context)}</span>
+              </div>
+
               {completedIds.has(lesson.id) && <Check className="h-5 w-5 text-primary" />}
             </Link>
           </li>

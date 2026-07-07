@@ -13,25 +13,31 @@ export function GrammarNoteView({ note }: GrammarNoteViewProps) {
   const [showDeeper, setShowDeeper] = useState(false);
 
   return (
-    <section className="space-y-3 mt-3">
-      <h3 className="text-sm font-medium">{localize(note.title)}</h3>
-
-      {note.body.map((b, i) => (
-        <GrammarBlockView key={i} block={b} />
-      ))}
-
-      {note.deeper && note.deeper.length > 0 && (
-        <div className="pt-1">
-          <button
-            type="button"
-            className="text-sm font-medium text-primary hover:underline cursor-pointer"
-            onClick={() => setShowDeeper((v) => !v)}
-          >
-            {showDeeper ? t('grammar.collapse') : t('grammar.showDeeper')}
-          </button>
-          {showDeeper && note.deeper.map((b, i) => <GrammarBlockView key={i} block={b} />)}
-        </div>
+    <div className="mt-2 flex flex-col gap-3">
+      {note.title && (
+        <span className="text-sm font-medium text-primary">{localize(note.title)}</span>
       )}
-    </section>
+
+      <div className="flex flex-col gap-6">
+        {note.body.map((b, i) => (
+          <GrammarBlockView key={i} block={b} />
+        ))}
+
+        {note.deeper && note.deeper.length > 0 && (
+          <div>
+            <button
+              type="button"
+              className="text-sm font-medium text-primary hover:underline cursor-pointer mb-3"
+              onClick={() => setShowDeeper((v) => !v)}
+            >
+              {showDeeper ? t('grammar.collapse') : t('grammar.showDeeper')}
+            </button>
+            <div className="flex flex-col gap-6">
+              {showDeeper && note.deeper.map((b, i) => <GrammarBlockView key={i} block={b} />)}
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
   );
 }

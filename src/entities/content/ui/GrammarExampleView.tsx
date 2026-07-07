@@ -21,12 +21,16 @@ export function GrammarExampleView({ example }: GrammarExampleProps) {
     return <p className="text-sm text-muted-foreground">{localize(example.text)}</p>;
   }
 
+  console.log(example);
+
   if (example.kind === 'transform') {
     return (
-      <div className="flex items-center gap-3 bg-muted rounded-lg px-3 py-2.5">
-        <FormView form={example.from} />
-        <ArrowRight className="size-4 shrink-0 text-muted-foreground" />
-        <FormView form={example.to} />
+      <div className="flex flex-col gap-2 bg-muted rounded-lg px-3 py-2.5">
+        <div className="flex items-center gap-3 ">
+          <FormView form={example.from} />
+          <ArrowRight className="size-4 shrink-0 text-muted-foreground" />
+          <FormView form={example.to} />
+        </div>
         {example.note && (
           <span className="ml-1 text-sm text-heading">{localize(example.note)}</span>
         )}

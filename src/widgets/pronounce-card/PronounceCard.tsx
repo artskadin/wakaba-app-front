@@ -17,6 +17,7 @@ import { CopyButton, FavouriteButton } from '@/shared/ui';
 import { useSentenceFavourite } from '@/features/favourites';
 import { formatTime } from '@/shared/lib/audio/formatTime';
 import { useAudioLockReporter } from '@/shared/lib/audio/useAudioLockReporter';
+import { buildJpSentence } from '@/entities/content/lib/buildJpSentence';
 
 interface PronounceCardProps {
   bundle: LessonBundle;
@@ -50,7 +51,7 @@ export function PronounceCard({
       toast.error(t(kind === 'record' ? 'common.recordFailed' : 'common.playbackFailed')),
   });
   const lockedByOther = useAudioLockReporter(rec.mode, lockKey);
-  const japanese = tokens.map((x) => x.token.surface).join('');
+  const japanese = buildJpSentence(tokens);
 
   const showCard = revealed || rec.hasRecording;
 

@@ -11,7 +11,11 @@ for (const path in modules) {
 
 export const previewContentRepo = {
   list() {
-    return Object.values(drafts).map((b) => ({ id: b.lesson.id, title: b.lesson.title }));
+    return Object.values(drafts).map((b) => ({
+      id: b.lesson.id,
+      title: b.lesson.title,
+      context: b.lesson.context,
+    }));
   },
   getLessonBundle(id: string): LessonBundle {
     const bundle = drafts[id];

@@ -35,6 +35,8 @@ export interface TokenRef {
   tokenId: string;
   slotType?: SlotType;
   isFocusSlot?: boolean;
+  before?: string;
+  after?: string;
 }
 
 export interface Sentence {
@@ -67,14 +69,14 @@ export type GrammarExample =
   | { kind: 'plain'; text: LocalizedText };
 
 export interface GrammarBlock {
-  summary: LocalizedText;
+  summary?: LocalizedText;
   details?: LocalizedText[];
-  examples: GrammarExample[];
+  examples?: GrammarExample[];
 }
 
 export interface GrammarNote {
   id: string;
-  title: LocalizedText;
+  title?: LocalizedText;
   body: GrammarBlock[];
   deeper?: GrammarBlock[];
 }
@@ -90,12 +92,16 @@ export interface Dialog {
   turns: DialogTurn[];
 }
 
-export type LessonStep =
-  | { kind: 'teach'; sentenceId: string; patternId?: string; siblingSentenceIds?: string[] }
-  | { kind: 'assemble'; sentenceId: string }
-  | { kind: 'speak'; sentenceId: string }
-  | { kind: 'listen'; sentenceId: string }
-  | { kind: 'dialog'; dialogId: string };
+type StepNotes = { grammarNoteIds?: string[] };
+
+export type LessonStep = StepNotes &
+  (
+    | { kind: 'teach'; sentenceId: string; patternId?: string; siblingSentenceIds?: string[] }
+    | { kind: 'assemble'; sentenceId: string }
+    | { kind: 'speak'; sentenceId: string }
+    | { kind: 'listen'; sentenceId: string }
+    | { kind: 'dialog'; dialogId: string }
+  );
 
 export interface ChangelogEntry {
   version: number;
@@ -125,7 +131,7 @@ export interface TrackManifest {
   id: string;
   title: LocalizedText;
   description: LocalizedText;
-  lessons: { id: string; title: LocalizedText }[];
+  lessons: { id: string; title: LocalizedText; context: LocalizedText }[];
 }
 
 export interface ContentManifest {

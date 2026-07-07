@@ -4,6 +4,7 @@ import { SentenceCard } from '@/widgets/sentence-card';
 import { AudioLockProvider } from '@/shared/lib/audio/AudioLockProvider';
 import { PronounceCard } from '@/widgets/pronounce-card';
 import { useState } from 'react';
+import { localize } from '@/shared/lib/localize';
 
 type DialogStepDef = Extract<LessonStep, { kind: 'dialog' }>;
 
@@ -23,16 +24,16 @@ export function DialogStep({
   onTokenClick,
 }: DialogStepProps) {
   const { t } = useTranslation();
-  const { turns } = bundle.dialogs[step.dialogId];
+  const dialog = bundle.dialogs[step.dialogId];
 
-  const userTurnIdx = turns.flatMap((tn, i) => (tn.speaker === 'user' ? [i] : []));
+  const userTurnIdx = dialog.turns.flatMap((tn, i) => (tn.speaker === 'user' ? [i] : []));
 
   const [recorded, setRecorded] = useState<Set<number>>(() =>
     solved ? new Set(userTurnIdx) : new Set(),
   );
 
   const isVisible = (i: number) =>
-    turns.slice(0, i).every((tn, j) => tn.speaker !== 'user' || recorded.has(j));
+    dialog.turns.slice(0, i).every((tn, j) => tn.speaker !== 'user' || recorded.has(j));
 
   function markRecorded(idx: number) {
     setRecorded((prev) => {
@@ -54,11 +55,12 @@ export function DialogStep({
   return (
     <AudioLockProvider>
       <div className="flex flex-col gap-4">
-        <p className="text-sm uppercase tracking-wide text-muted-foreground">
-          {t('lesson.dialog.title')}
-        </p>
+        <div className="flex flex-col gap-4 text-sm tracking-wide text-muted-foreground">
+          <span className="uppercase">{t('lesson.dialog.title')}</span>
+          <span>{localize(dialog.title)}</span>
+        </div>
 
-        {turns.map((turn, idx) => {
+        {dialog.turns.map((turn, idx) => {
           if (!isVisible(idx)) {
             return null;
           }

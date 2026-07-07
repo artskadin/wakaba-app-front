@@ -14,6 +14,7 @@ import { Headphones } from 'lucide-react';
 import { CopyButton } from '@/shared/ui';
 import { audioUrl } from '@/shared/lib/audio/url';
 import { useListen } from '@/shared/lib/audio/useListen';
+import { buildJpSentence } from '@/entities/content/lib/buildJpSentence';
 
 type AssembleStepDef = Extract<LessonStep, { kind: 'assemble' }>;
 
@@ -34,7 +35,7 @@ export function AssembleStep({ bundle, step, solved, onSolvedChange }: AssembleS
   );
   const voice = useVoiceStore((s) => s.voice);
   const listen = useListen();
-  const japanese = tokens.map((t) => t.token.surface).join('');
+  const japanese = buildJpSentence(tokens);
 
   const isSolved = (order: number[]) =>
     order.length === tokenCount && order.every((v, idx) => v === idx);
@@ -63,16 +64,28 @@ export function AssembleStep({ bundle, step, solved, onSolvedChange }: AssembleS
 
       <div className="flex min-h-16 flex-col gap-2 rounded-lg border-2 border-dashed px-3.5 py-3">
         <div className="flex flex-wrap items-start gap-2 ">
-          {placed.map((tokenIdx) => (
-            <button
-              key={tokenIdx}
-              type="button"
-              className="flex flex-col items-center rounded-lg border px-2 py-1 text-lg cursor-pointer hover:bg-muted"
-              onClick={() => remove(tokenIdx)}
-            >
-              <TokenView token={tokens[tokenIdx].token} />
-            </button>
-          ))}
+          {placed.map((tokenIdx) => {
+            const { ref } = tokens[tokenIdx];
+
+            return (
+              <span className="flex items-start">
+                {ref.before && (
+                  <span className="py-1 mx-1 text-lg leading-tight">{ref.before}</span>
+                )}
+
+                <button
+                  key={tokenIdx}
+                  type="button"
+                  className="flex flex-col items-center rounded-lg border px-1.5 py-1 text-lg cursor-pointer hover:bg-muted"
+                  onClick={() => remove(tokenIdx)}
+                >
+                  <TokenView token={tokens[tokenIdx].token} />
+                </button>
+
+                {ref.after && <span className="py-1 mx-1 text-lg leading-tight">{ref.after}</span>}
+              </span>
+            );
+          })}
         </div>
 
         {isCorrect && (
@@ -98,7 +111,7 @@ export function AssembleStep({ bundle, step, solved, onSolvedChange }: AssembleS
             key={tokenIdx}
             type="button"
             disabled={placed.includes(tokenIdx)}
-            className="flex flex-col items-center rounded-lg border px-2 py-1 text-lg disabled:opacity-30 cursor-pointer hover:bg-muted"
+            className="flex flex-col items-center rounded-lg border px-1.5 py-1 text-lg disabled:opacity-30 cursor-pointer hover:bg-muted"
             onClick={() => place(tokenIdx)}
           >
             <TokenView token={tokens[tokenIdx].token} />
