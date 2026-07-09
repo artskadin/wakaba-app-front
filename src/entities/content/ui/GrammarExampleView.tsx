@@ -21,8 +21,6 @@ export function GrammarExampleView({ example }: GrammarExampleProps) {
     return <p className="text-sm text-muted-foreground">{localize(example.text)}</p>;
   }
 
-  console.log(example);
-
   if (example.kind === 'transform') {
     return (
       <div className="flex flex-col gap-2 bg-muted rounded-lg px-3 py-2.5">
