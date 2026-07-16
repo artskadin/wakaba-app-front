@@ -33,8 +33,6 @@ export interface Token {
 
 export interface TokenRef {
   tokenId: string;
-  slotType?: SlotType;
-  isFocusSlot?: boolean;
   before?: string;
   after?: string;
 }
@@ -45,7 +43,7 @@ export interface Sentence {
   translation: LocalizedText;
   romaji: string;
   cyrillicGuide: LocalizedText;
-  patternId?: string;
+  patterns?: { patternId: string; focusTokenIndex: number }[];
   grammarNoteIds?: string[];
 }
 

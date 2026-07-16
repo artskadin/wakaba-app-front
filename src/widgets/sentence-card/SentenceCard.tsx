@@ -19,7 +19,7 @@ import { buildJpSentence } from '@/entities/content/lib/buildJpSentence';
 interface SentenceCardProps {
   bundle: LessonBundle;
   sentenceId: string;
-  highlightSlot?: boolean;
+  focusTokenIndex?: number;
   bordered?: boolean;
   lockKey?: string;
   onTokenClick?: (resolvedToken: ResolvedToken) => void;
@@ -28,7 +28,7 @@ interface SentenceCardProps {
 export function SentenceCard({
   bundle,
   sentenceId,
-  highlightSlot = false,
+  focusTokenIndex,
   bordered = true,
   lockKey,
   onTokenClick,
@@ -48,7 +48,7 @@ export function SentenceCard({
         <SentenceView
           bundle={bundle}
           sentenceId={sentenceId}
-          highlightSlot={highlightSlot}
+          focusTokenIndex={focusTokenIndex}
           onTokenClick={onTokenClick}
         />
         <FavouriteButton active={isFavourite} onToggle={toggle} disabled={isPending} />

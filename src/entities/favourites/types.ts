@@ -4,8 +4,6 @@ export type FavouriteItemType = 'token' | 'sentence';
 
 export interface FavouriteSentenceToken {
   token: Token;
-  slotType: string | null;
-  isFocusSlot: boolean;
 }
 
 export interface FavouriteSentence {

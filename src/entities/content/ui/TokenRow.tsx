@@ -3,24 +3,23 @@ import { TokenView } from './TokenView';
 
 interface TokenRowProps {
   tokens: ResolvedToken[];
-  highlightSlot?: boolean;
+  focusTokenIndex?: number;
   onTokenClick?: (rt: ResolvedToken) => void;
 }
 
-export function TokenRow({ tokens, highlightSlot, onTokenClick }: TokenRowProps) {
+export function TokenRow({ tokens, focusTokenIndex, onTokenClick }: TokenRowProps) {
   return (
     <div className="flex flex-wrap items-start gap-x-1 gap-y-2">
       {tokens.map((resolved, i) => {
-        const isSlot = highlightSlot && !!resolved.ref.slotType;
+        const isSlot = i === focusTokenIndex;
 
         return (
-          <span className="flex items-start">
+          <span key={i} className="flex items-start">
             {resolved.ref.before && (
               <span className="py-1 text-lg leading-tight">{resolved.ref.before}</span>
             )}
 
             <button
-              key={i}
               type="button"
               onClick={() => onTokenClick?.(resolved)}
               className={`

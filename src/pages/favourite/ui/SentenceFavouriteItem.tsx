@@ -22,7 +22,7 @@ export function SentenceFavouriteItem({ sentence, onOpenToken }: SentenceFavouri
 
   const resolved: ResolvedToken[] = sentence.tokens.map((st) => ({
     token: st.token,
-    ref: { tokenId: st.token.id, slotType: st.slotType ?? undefined, isFocusSlot: st.isFocusSlot },
+    ref: { tokenId: st.token.id },
   }));
   const japanese = sentence.tokens.map((st) => st.token.surface).join('');
 

@@ -1789,7 +1789,12 @@
       "cyrillicGuide": {
         "ru": "эйго ва ханасэмас ка"
       },
-      "patternId": "speak-language"
+      "patterns": [
+        {
+          "patternId": "speak-language",
+          "focusTokenIndex": 0
+        }
+      ]
     },
     "ask-speak-russian": {
       "id": "ask-speak-russian",
@@ -1816,7 +1821,12 @@
       "cyrillicGuide": {
         "ru": "росиаго ва ханасэмас ка"
       },
-      "patternId": "speak-language"
+      "patterns": [
+        {
+          "patternId": "speak-language",
+          "focusTokenIndex": 0
+        }
+      ]
     },
     "ask-speak-chinese": {
       "id": "ask-speak-chinese",
@@ -1843,7 +1853,12 @@
       "cyrillicGuide": {
         "ru": "тю:гокуго ва ханасэмас ка"
       },
-      "patternId": "speak-language"
+      "patterns": [
+        {
+          "patternId": "speak-language",
+          "focusTokenIndex": 0
+        }
+      ]
     },
     "cannot-speak-japanese": {
       "id": "cannot-speak-japanese",

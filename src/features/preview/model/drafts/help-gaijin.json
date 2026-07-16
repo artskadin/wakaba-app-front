@@ -3066,7 +3066,12 @@
       "cyrillicGuide": {
         "ru": "тоирэ ва доко дэс ка"
       },
-      "patternId": "ask-where"
+      "patterns": [
+        {
+          "patternId": "ask-where",
+          "focusTokenIndex": 0
+        }
+      ]
     },
     "where-station": {
       "id": "where-station",
@@ -3096,7 +3101,12 @@
       "cyrillicGuide": {
         "ru": "эки ва доко дэс ка"
       },
-      "patternId": "ask-where"
+      "patterns": [
+        {
+          "patternId": "ask-where",
+          "focusTokenIndex": 0
+        }
+      ]
     },
     "where-konbini": {
       "id": "where-konbini",
@@ -3126,7 +3136,12 @@
       "cyrillicGuide": {
         "ru": "комбини ва доко дэс ка"
       },
-      "patternId": "ask-where"
+      "patterns": [
+        {
+          "patternId": "ask-where",
+          "focusTokenIndex": 0
+        }
+      ]
     },
     "where-exchange": {
       "id": "where-exchange",
@@ -3156,7 +3171,12 @@
       "cyrillicGuide": {
         "ru": "рё:гаэдзё ва доко дэс ка"
       },
-      "patternId": "ask-where"
+      "patterns": [
+        {
+          "patternId": "ask-where",
+          "focusTokenIndex": 0
+        }
+      ]
     },
     "thanks-polite": {
       "id": "thanks-polite",

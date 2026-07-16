@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { InfoIcon } from 'lucide-react';
 import {
   GrammarNoteView,
+  slotIndexForPattern,
   type LessonBundle,
   type LessonStep,
   type ResolvedToken,
@@ -32,6 +33,8 @@ export function TeachStep({ bundle, step, onTokenClick }: TeachStepProps) {
   const pattern = step.patternId ? bundle.patterns[step.patternId] : undefined;
   const sentence = bundle.sentences[step.sentenceId];
 
+  const activeSlot = slotIndexForPattern(bundle.sentences[activeSentenceId], step.patternId);
+
   return (
     <div className="flex flex-col gap-4">
       <p className="text-sm uppercase tracking-wide text-muted-foreground">
@@ -41,7 +44,7 @@ export function TeachStep({ bundle, step, onTokenClick }: TeachStepProps) {
       <SentenceCard
         bundle={bundle}
         sentenceId={activeSentenceId}
-        highlightSlot={true}
+        focusTokenIndex={activeSlot}
         onTokenClick={onTokenClick}
       />
 
@@ -78,8 +81,9 @@ export function TeachStep({ bundle, step, onTokenClick }: TeachStepProps) {
           </p>
           <div className="flex flex-wrap gap-2">
             {siblings.map((sentenceId) => {
-              const sentence = bundle.sentences[sentenceId];
-              const focusRef = sentence.tokens.find((t) => t.isFocusSlot);
+              const sib = bundle.sentences[sentenceId];
+              const slot = slotIndexForPattern(sib, step.patternId);
+              const focusRef = slot !== undefined ? sib.tokens[slot] : undefined;
               const focusWord = focusRef ? bundle.tokens[focusRef.tokenId] : undefined;
               const isActive = sentenceId === activeSentenceId;
 
@@ -102,7 +106,7 @@ export function TeachStep({ bundle, step, onTokenClick }: TeachStepProps) {
                         : 'hover:border-primary/10 hover:text-primary hover:bg-primary/10'
                     }`}
                 >
-                  {focusWord ? focusWord.cyrillic : localize(sentence.translation)}
+                  {focusWord ? focusWord.cyrillic : localize(sib.translation)}
                 </Button>
               );
             })}

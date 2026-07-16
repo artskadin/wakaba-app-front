@@ -5,14 +5,14 @@ import { localize } from '@/shared/lib/localize';
 interface SentenceViewProps {
   bundle: LessonBundle;
   sentenceId: string;
-  highlightSlot?: boolean;
+  focusTokenIndex?: number;
   onTokenClick?: (resolvedToken: ResolvedToken) => void;
 }
 
 export function SentenceView({
   bundle,
   sentenceId,
-  highlightSlot,
+  focusTokenIndex,
   onTokenClick,
 }: SentenceViewProps) {
   const { tokens } = resolveSentence(bundle, sentenceId);
@@ -20,7 +20,7 @@ export function SentenceView({
 
   return (
     <div className="flex flex-col gap-2">
-      <TokenRow tokens={tokens} highlightSlot={highlightSlot} onTokenClick={onTokenClick} />
+      <TokenRow tokens={tokens} focusTokenIndex={focusTokenIndex} onTokenClick={onTokenClick} />
       <span className="text-base text-heading">{localize(translation)}</span>
     </div>
   );
