@@ -22,7 +22,7 @@ export function TokenDetail({ token, note }: TokenDetailProps) {
     <div className="mx-auto w-full max-w-md pb-6">
       <div className="flex items-start justify-between">
         <div>
-          <div className="flex items-center gap-1">
+          <div className="flex items-start gap-1">
             <div className="text-2xl">{token.surface}</div>
 
             <Button

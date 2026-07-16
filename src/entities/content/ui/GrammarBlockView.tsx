@@ -20,7 +20,7 @@ export function GrammarBlockView({ block }: { block: GrammarBlock }) {
 
       {block.examples && block.examples.length > 0 && (
         <div className="flex flex-col gap-2.5">
-          <p className="text-sm tracking-wide uppercase ">Примеры</p>
+          {/*<p className="text-sm tracking-wide uppercase ">Примеры</p>*/}
           {block.examples.map((ex, i) => (
             <GrammarExampleView key={i} example={ex} />
           ))}

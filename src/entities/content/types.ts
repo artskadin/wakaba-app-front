@@ -61,12 +61,28 @@ export interface ExampleForm {
   romaji: string;
   cyrillic?: string;
   gloss?: string;
+  translation?: LocalizedText;
+}
+
+export interface ContrastSegment {
+  surface: string;
+  romaji: string;
+  cyrillic?: string;
+  isHighlight?: boolean;
+}
+
+export interface ContrastSide {
+  segments: ContrastSegment[];
+  translation?: LocalizedText;
 }
 
 export type GrammarExample =
   | { kind: 'transform'; from: ExampleForm; to: ExampleForm; note?: LocalizedText }
   | { kind: 'phrase'; forms: ExampleForm[]; note?: LocalizedText }
-  | { kind: 'plain'; text: LocalizedText };
+  | { kind: 'plain'; text: LocalizedText }
+  | { kind: 'dialog-pair'; a: ExampleForm; b: ExampleForm; note?: LocalizedText }
+  | { kind: 'contrast'; a: ContrastSide; b: ContrastSide; note?: LocalizedText }
+  | { kind: 'wrong-right'; wrong?: ExampleForm; right?: ExampleForm; note?: LocalizedText };
 
 export interface GrammarBlock {
   summary?: LocalizedText;
